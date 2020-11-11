@@ -10955,7 +10955,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             // get mac os-x application class
             Class appc = Class.forName("com.apple.eawt.Application");
             // create a new instance for it.
-            Object app = appc.newInstance();
+            Object app = appc.getDeclaredConstructor().newInstance();
             // get the application-listener class. here we can set our action to the apple menu
             Class lc = Class.forName("com.apple.eawt.ApplicationListener");
             Object listener = Proxy.newProxyInstance(lc.getClassLoader(), new Class[] { lc }, new InvocationHandler() {
@@ -11004,7 +11004,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 Constants.zknlogger.log(Level.SEVERE,ex.getLocalizedMessage());
             }
         }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             Constants.zknlogger.log(Level.SEVERE,e.getLocalizedMessage());
         }
         // </editor-fold>
