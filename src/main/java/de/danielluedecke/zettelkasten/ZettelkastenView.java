@@ -11268,7 +11268,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             @Override
             public String getToolTipText(MouseEvent evt) {
                 String text = null;
-                int pos = viewToModel(evt.getPoint());
+                int pos = viewToModel2D(evt.getPoint());
                 if (pos >= 0) {
                     HTMLDocument hdoc = (HTMLDocument) getDocument();
                     javax.swing.text.Element e = hdoc.getCharacterElement(pos);
