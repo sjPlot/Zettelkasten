@@ -8888,12 +8888,12 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         // therefore, create a filename of the backup-file (which equals the
         // original filename, except the file-extension, which we replace
         // by the backup-extension here
-        File backupfile = new File(fp.toString().replace(Constants.ZKN_FILEEXTENSION, Constants.ZKN_BACKUPFILEEXTENSION));
+        File backupFile = new File(fp.toString().replace(Constants.ZKN_FILEEXTENSION, Constants.ZKN_BACKUPFILEEXTENSION));
         // if file exists, compare filedates...
-        if (backupfile.exists()) {
+        if (backupFile.exists()) {
             // get modified-dates of original- and backup-file
             long modifiedOriginal = fp.lastModified();
-            long modifiedBackup = backupfile.lastModified();
+            long modifiedBackup = backupFile.lastModified();
             // if original-file is *older* than backup-file, ask
             // the user what to do...
             if (modifiedOriginal < modifiedBackup) {
@@ -8930,7 +8930,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                         // rename original file and append ".backup" as extension
                         fp.renameTo(checkbackup);
                         // rename backup-file to original file-name...
-                        backupfile.renameTo(settings.getFilePath());
+                        backupFile.renameTo(settings.getFilePath());
                         // tell user that the backup-file has been loaded and the old original file backuped
                         JOptionPane.showMessageDialog(getFrame(),
                                 getResourceMap().getString("backupLoadedMsg",
