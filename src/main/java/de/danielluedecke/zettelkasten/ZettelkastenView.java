@@ -8910,7 +8910,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 // here the user wants to open the backup-file instead of the older file...
                 if (JOptionPane.NO_OPTION == option) {
                     try {
-                        // in case the user already created a backup, we concatenate a trainling
+                        // in case the user already created a backup, we concatenate a trailing
                         // backup-counter-number to avoid overwriting existing backup-files
                         // we start with a "1"
                         int backupcounter = 1;
