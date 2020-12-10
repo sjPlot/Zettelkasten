@@ -6221,7 +6221,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     /**
-     * This method displays the all bookmarks in the jtable
+     * This method displays the all bookmarks in the jTable
      */
     private void showBookmarks() {
         // fill bookmarked entries into table
@@ -6233,6 +6233,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         for (ActionListener listener : al) {
             jComboBoxBookmarkCategory.removeActionListener(listener);
         }
+
         // clear combobox
         jComboBoxBookmarkCategory.removeAllItems();
         // add first cat-description
@@ -6246,27 +6247,25 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 jComboBoxBookmarkCategory.addItem(bmc);
             }
         }
+
         // add action listener to combo box
-        jComboBoxBookmarkCategory.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // get selection
-                int selected = jComboBoxBookmarkCategory.getSelectedIndex();
-                // check for valid selection
-                if (selected != -1) {
-                    // check whether first value was selected. if so, show all bookmarks
-                    if (0 == selected) {
-                        fillBookmarksToTables(bookmarks.getAllBookmarkedEntries());
-                    } // else retrieve category and show only bookmarks of the selected category
-                    else {
-                        // retrieve selected category
-                        String cat = jComboBoxBookmarkCategory.getSelectedItem().toString();
-                        // retrieve all bookmarks from that category
-                        fillBookmarksToTables(bookmarks.getBookmarkedEntriesFromCat(cat));
-                    }
-                    // show amount of entries
-                    statusMsgLabel.setText("(" + String.valueOf(jTableBookmarks.getRowCount()) + " " + getResourceMap().getString("statusTextBookmarks") + ")");
+        jComboBoxBookmarkCategory.addActionListener(evt -> {
+            // get selection
+            int selected = jComboBoxBookmarkCategory.getSelectedIndex();
+            // check for valid selection
+            if (selected != -1) {
+                // check whether first value was selected. if so, show all bookmarks
+                if (0 == selected) {
+                    fillBookmarksToTables(bookmarks.getAllBookmarkedEntries());
+                } // else retrieve category and show only bookmarks of the selected category
+                else {
+                    // retrieve selected category
+                    String cat = jComboBoxBookmarkCategory.getSelectedItem().toString();
+                    // retrieve all bookmarks from that category
+                    fillBookmarksToTables(bookmarks.getBookmarkedEntriesFromCat(cat));
                 }
+                // show amount of entries
+                statusMsgLabel.setText("(" + String.valueOf(jTableBookmarks.getRowCount()) + " " + getResourceMap().getString("statusTextBookmarks") + ")");
             }
         });
         // show/enable related menu
