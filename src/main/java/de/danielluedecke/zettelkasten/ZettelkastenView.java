@@ -3842,7 +3842,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     /**
-     * This method is used to update the content of the textfields/lists, but
+     * This method is used to update the content of the text fields/lists, but
      * not the whole display like tabbed pane as well. Usually this method is
      * called when a link to another entry or a follower entry or any entry in
      * one of the tabbed pane's tables is selected. This selection does just
@@ -3856,41 +3856,53 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * @param nr the number of the entry that should be displayed
      */
     public void updateDisplayParts(int nr) {
-        // if we have an invalid number, leave
-        if (nr >= 1) {// set the number of the displayed zettel...
-// we need to do this so we can distinguish between the currently *displayed* entry
-// and the current *activated* or *active* entry (which can be retrieved via the
-// CDaten-class' getCurrentZettelPos. When an entry is displayed, the content of the
-// jEditorPane's is updated. However, when an entry is also *activated* the entry's related
-// content in the tabbed pane's tables is updated as well
-            displayedZettel = nr;// if the user wants to add all displayed entries to the history, including those that are
-// not only activated, but also displayed, do this here...
+        if (nr >= 1) {
+            displayedZettel = nr;
+
+            // we need to do this so we can distinguish between the currently *displayed* entry
+            // and the current *activated* or *active* entry which can be retrieved via the
+            //        CDaten-class' getCurrentZettelPos.
+            // When an entry is displayed, the content of the jEditorPane's is updated.
+            // However, when an entry is also *activated*
+            //        the entry's related content in the tabbed pane's tables is updated as well
+
             if (settings.getAddAllToHistory()) {
-                // add displayed zettel to history
                 data.addToHistory(nr);
+
                 // update buttons for navigating through history
                 buttonHistoryBack.setEnabled(data.canHistoryBack());
                 buttonHistoryFore.setEnabled(data.canHistoryFore());
-            }// update highlight-terms by either retrieving the keywords of the displayed entry
-// or setting it to null.
-// get the keywords which should be highlighted, if highlighting keywords is activated.
-// check whether keywords should be highlighted at all
+            }
+
+            // update highlight-terms
+            // either retrieve the keywords of the displayed entry
+            //       or set it to null.
+            // get the keywords which should be highlighted, if highlighting keywords is activated.
+            // check whether keywords should be highlighted at all
+
             if (settings.getHighlightKeywords()) {
-                // retrieve highlightterms
+
+                // retrieve highlight terms
                 String[] highlightterms = data.getSeparatedKeywords(displayedZettel);
+
                 // create new linked list that will contain all highlight-terms, including
                 // the related synonyms of the highlight-terms
                 LinkedList<String> highlight = new LinkedList<>();
+
                 // check whether we have any keywords to highlight
                 if (highlightterms != null && highlightterms.length > 0) {
                     highlight.addAll(Arrays.asList(highlightterms));
+
                     // check whether synonyms should be included as well
                     if (settings.getSearchAlwaysSynonyms()) {
+
                         // iterate all current highlight keywords
                         // and add synonyms
                         for (String kw : highlightterms) {
+
                             // get the synonym-line for each search term
                             String[] synline = synonyms.getSynonymLineFromAny(kw, false);
+
                             // if we have synonyms...
                             if (synline != null) {
                                 // iterate synonyms
@@ -3903,36 +3915,59 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                             }
                         }
                     }
-                    HtmlUbbUtil.setHighlighTerms(highlight.toArray(new String[highlight.size()]), HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS, settings.getHighlightWholeWord());
-                } else {
-                    HtmlUbbUtil.setHighlighTerms(null, HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS, settings.getHighlightWholeWord());
-                }
-            } else {
-                HtmlUbbUtil.setHighlighTerms(null, HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS, settings.getHighlightWholeWord());
-            }
-            displayZettelContent(nr);// Here we set up the keywordlist for the JList
-// retrieve the current keywords
-            String[] kws = data.getKeywords(nr);// prepare the JList which will display the keywords
-            keywordListModel.clear();// check whether any keywords have been found
+
+                    HtmlUbbUtil.setHighlighTerms(highlight.toArray(new String[highlight.size()]),
+                            HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                            settings.getHighlightWholeWord());
+
+                } else
+                    HtmlUbbUtil.setHighlighTerms(null,
+                            HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                            settings.getHighlightWholeWord());
+            } else
+                HtmlUbbUtil.setHighlighTerms(null,
+                        HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                        settings.getHighlightWholeWord());
+
+            displayZettelContent(nr);
+
+            // Here we set up the keyword list for the JList retrieve the current keywords
+            String[] kws = data.getKeywords(nr);
+
+            // prepare the JList which will display the keywords
+            keywordListModel.clear();
+
+            // check whether any keywords have been found
             if (kws != null) {
+
                 // sort the array
                 if (kws.length > 0) {
                     Arrays.sort(kws, new Comparer());
                 }
+
                 // iterate the string array and add its content to the list model
                 for (String kw : kws) {
                     keywordListModel.addElement(kw);
                 }
-            }// create new stringbuilder for border-text. we set the amount of keywords
-// as new border-title
-            StringBuilder bordertext = new StringBuilder("");// get localalised description
-            bordertext.append(getResourceMap().getString("jListEntryKeywords.border.title"));// if we have any keywords...
-// copy amount of keywords behind description
+            }
+
+            // create new string builder for border-text. we set the amount of keywords as new border-title
+            StringBuilder bordertext = new StringBuilder("");
+
+            // get localized description
+            bordertext.append(getResourceMap().getString("jListEntryKeywords.border.title"));
+
+            // if we have any keywords...
+            // copy amount of keywords behind description
             if (!keywordListModel.isEmpty()) {
                 bordertext.append(" (").append(String.valueOf(keywordListModel.size())).append(")");
-            }// set new border text
+            }
+
+            // set new border text
             Color bcol = null;
-            jListEntryKeywords.setBorder(ZknMacWidgetFactory.getTitledBorder(bordertext.toString(), bcol, settings));// en- or disable those actions which are related to the displaying of the current entry
+            jListEntryKeywords.setBorder(ZknMacWidgetFactory.getTitledBorder(bordertext.toString(), bcol, settings));
+
+            // en- or disable those actions which are related to the displaying of the current entry
             setCurrentEntryShown(displayedZettel != data.getCurrentZettelPos());
         }
     }
