@@ -657,7 +657,8 @@ class DatenTest {
     }
 
     @Test
-    void getCleanZettelContent() {
+    void getZettelContentUbbTagsRemoved() {
+        // cleaned content of an entry
     }
 
     @Test
