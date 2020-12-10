@@ -569,7 +569,7 @@ public class ExportToTxtTask extends org.jdesktop.application.Task<Object, Void>
         // entry was not modified - thus we retrieve the "original" entry.
         if (null == text || text.isEmpty()) {
             // get cleanded content, for plain text without any ubb-tags
-            text = dataObj.getCleanZettelContent(nr);
+            text = dataObj.getZettelContentUbbTagsRemoved(nr);
         } else {
             // else clean text from ubb-tags
             text = Tools.removeUbbFromString(text, true);

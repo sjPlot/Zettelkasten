@@ -6072,7 +6072,7 @@ public class Daten {
      * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6103,7 +6103,7 @@ public class Daten {
      * <br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6145,7 +6145,7 @@ public class Daten {
      * This method returns the content of a certain entry, i.e. the main entry
      * text (text excerpt or whatever). The content is returned in
      * HTML-format.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6213,7 +6213,7 @@ public class Daten {
      * @return the cleaned content of that entry, with all formatting-tags
      * removed
      */
-    public String getCleanZettelContent(int pos) {
+    public String getZettelContentUbbTagsRemoved(int pos) {
 
         // get the zettel content
         String content = getZettelContent(pos);

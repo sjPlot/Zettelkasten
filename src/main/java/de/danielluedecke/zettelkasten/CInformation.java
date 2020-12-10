@@ -292,7 +292,7 @@ public class CInformation extends javax.swing.JDialog {
                     // increase entry counter
                     totalEntries++;
                     // get complete entry-content, i.e. title and content
-                    String wordcoutnstring = dataObj.getZettelTitle(cnt)+" "+dataObj.getCleanZettelContent(cnt);
+                    String wordcoutnstring = dataObj.getZettelTitle(cnt)+" "+dataObj.getZettelContentUbbTagsRemoved(cnt);
                     // split complete content at each word
                     String[] words = wordcoutnstring.toLowerCase().
                                                     replace("ä","ae").

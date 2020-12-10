@@ -1571,7 +1571,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                 // entry was not modified - thus we retrieve the "original" entry.
                 if (null == text || text.isEmpty()) {
                     // also cleaned text for wordcounter
-                    sbWordCountDisplayTask.append(dataObj.getCleanZettelContent(nr)).append(" ");
+                    sbWordCountDisplayTask.append(dataObj.getZettelContentUbbTagsRemoved(nr)).append(" ");
                     // get zettel-text
                     text = HtmlUbbUtil.getHtmlContentForDesktop(dataObj, bibtexObj, settingsObj, nr, isHeadingVisible, isEntryNumberVisible, false, false);
                 } // else if we have a modified entry-content, we still need to convert its

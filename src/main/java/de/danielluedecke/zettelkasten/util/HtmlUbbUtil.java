@@ -230,7 +230,7 @@ public class HtmlUbbUtil {
         // count total words of entry
         // ***********************************************
         // get complete entry-content, i.e. title and content
-        String wordcoutnstring = dataObj.getZettelTitle(entrynr) + " " + dataObj.getCleanZettelContent(entrynr);
+        String wordcoutnstring = dataObj.getZettelTitle(entrynr) + " " + dataObj.getZettelContentUbbTagsRemoved(entrynr);
         // split complete content at each word
         String[] words = wordcoutnstring.toLowerCase().
                 replace("ä", "ae").

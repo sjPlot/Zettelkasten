@@ -1267,7 +1267,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
             URL imgURL = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/error.png");
             cleanedContent.append("<img border=\"0\" src=\"").append(imgURL).append("\">&#8195;");
             cleanedContent.append(resourceMap.getString("incorrectNestedTagsText"));
-            cleanedContent.append("</div>").append(dataObj.getCleanZettelContent(nr)).append("</body>");
+            cleanedContent.append("</div>").append(dataObj.getZettelContentUbbTagsRemoved(nr)).append("</body>");
             // and display clean content instead
             jEditorPaneSearchEntry.setText(cleanedContent.toString());
         }

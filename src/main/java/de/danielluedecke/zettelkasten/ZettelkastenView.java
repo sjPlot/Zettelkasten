@@ -3914,7 +3914,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             URL imgURL = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/error.png");
             cleanedContent.append("<img border=\"0\" src=\"").append(imgURL).append("\">&#8195;");
             cleanedContent.append(getResourceMap().getString("incorrectNestedTagsText"));
-            cleanedContent.append("</div>").append(data.getCleanZettelContent(nr)).append("</body>");
+            cleanedContent.append("</div>").append(data.getZettelContentUbbTagsRemoved(nr)).append("</body>");
             // and display clean content instead
             jEditorPaneEntry.setText(cleanedContent.toString());
         }
@@ -9811,7 +9811,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     @Action(enabledProperty = "entriesAvailable")
     public void setFirstLineAsTitle() {
         // retrieve selected text
-        String title = data.getCleanZettelContent(displayedZettel);
+        String title = data.getZettelContentUbbTagsRemoved(displayedZettel);
         // check whether we have any selection at all
         if (title != null && !title.isEmpty()) {
             // remove carriage returns

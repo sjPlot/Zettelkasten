@@ -256,14 +256,14 @@ public class FindDoubleEntriesTask extends javax.swing.JDialog {
                     // retrieve content of the entry "entrynr" so we can compare that content
                     // will all other entries
                     String zettelContent = dataObj.getZettelContent(entrynr);
-                    String cleanZettelContent = dataObj.getCleanZettelContent(entrynr);
+                    String cleanZettelContent = dataObj.getZettelContentUbbTagsRemoved(entrynr);
                     // go through all entries, starting with the next entry after "entrynr". all
                     // previous entries have already been check for multiple occurences in a former
                     // iteration
                     for (int counter=entrynr+1;counter<=dataObj.getCount(Daten.ZKNCOUNT);counter++) {
                         // compare zettelcontent with the following entries.
                         if (zettelContent.equalsIgnoreCase(dataObj.getZettelContent(counter)) ||
-                            cleanZettelContent.equalsIgnoreCase(dataObj.getCleanZettelContent(counter))) {
+                            cleanZettelContent.equalsIgnoreCase(dataObj.getZettelContentUbbTagsRemoved(counter))) {
                             // if we found a multiple occurence, set that entry-index-number to "-1", so
                             // this entry will not be checked again.
                             entries[counter-1] = -1;

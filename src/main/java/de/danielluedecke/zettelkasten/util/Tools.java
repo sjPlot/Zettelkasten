@@ -1451,7 +1451,7 @@ public class Tools {
         }
         // retrieve plain entry that contains no ubb-tags and add it
         // to our string builder
-        plainEntry.append(dataObj.getCleanZettelContent(displayedZettel));
+        plainEntry.append(dataObj.getZettelContentUbbTagsRemoved(displayedZettel));
         // get start and end of selection
         int selstart = editorPane.getSelectionStart() - 1;
         int selend = editorPane.getSelectionEnd() - 1;
