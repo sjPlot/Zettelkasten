@@ -11077,25 +11077,6 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         // </editor-fold>
     }
 
-    // FIXME #292 Sea Glass Look and Feel For Swing » 0.2.1
-    private void setupSeaGlassStyle() {
-        // make search fields look like mac
-        searchTextFieldVariants();
-        jEditorPaneClusterEntries.setBackground(Color.white);
-        jEditorPaneIsFollower.setBackground(Color.white);
-    }
-
-    private void searchTextFieldVariants() {
-        if (settings.isSeaGlass()) {
-            jTextFieldLiveSearch.putClientProperty("JTextField.variant", "search");
-            jTextFieldFilterKeywords.putClientProperty("JTextField.variant", "search");
-            jTextFieldFilterAuthors.putClientProperty("JTextField.variant", "search");
-            jTextFieldFilterTitles.putClientProperty("JTextField.variant", "search");
-            jTextFieldFilterCluster.putClientProperty("JTextField.variant", "search");
-            jTextFieldFilterAttachments.putClientProperty("JTextField.variant", "search");
-        }
-    }
-
     private void makeSeaGlassToolbar() {
         Tools.makeTexturedToolBarButton(tb_newEntry, Tools.SEGMENT_POSITION_FIRST);
         Tools.makeTexturedToolBarButton(tb_open, Tools.SEGMENT_POSITION_MIDDLE);
