@@ -4349,18 +4349,18 @@ public class Daten {
      * entry and author
      */
     public String getEntryAsHtml(int pos, String[] segmentKeywords, int sourceframe) {
+        String result = "";
         // retrieve the entry
         Element entry = retrieveElement(zknFile, pos);
         // if no element exists, return empty array
-        if (null == entry) {
-            return "";
+        if (null != entry) {// pass the title, content and author information to the html class
+// this class is responsible for doing the layout of the html page
+// which display an entry in the main window's JEditorPane
+// return the complete html page as string array, first element of the
+// array containing the main entry, second element the author information
+            result = HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
         }
-        // pass the title, content and author information to the html class
-        // this class is responsible for doing the layout of the html page
-        // which display an entry in the main window's JEditorPane
-        // return the complete html page as string array, first element of the
-        // array containing the main entry, second element the author information
-        return HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
+        return result;
     }
 
     /**
