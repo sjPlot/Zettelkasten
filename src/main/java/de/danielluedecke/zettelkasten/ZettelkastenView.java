@@ -3874,60 +3874,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 buttonHistoryFore.setEnabled(data.canHistoryFore());
             }
 
-            // update highlight-terms
-            // either retrieve the keywords of the displayed entry
-            //       or set it to null.
-            // get the keywords which should be highlighted, if highlighting keywords is activated.
-            // check whether keywords should be highlighted at all
-
-            if (settings.getHighlightKeywords()) {
-
-                // retrieve highlight terms
-                String[] highlightterms = data.getSeparatedKeywords(displayedZettel);
-
-                // create new linked list that will contain all highlight-terms, including
-                // the related synonyms of the highlight-terms
-                LinkedList<String> highlight = new LinkedList<>();
-
-                // check whether we have any keywords to highlight
-                if (highlightterms != null && highlightterms.length > 0) {
-                    highlight.addAll(Arrays.asList(highlightterms));
-
-                    // check whether synonyms should be included as well
-                    if (settings.getSearchAlwaysSynonyms()) {
-
-                        // iterate all current highlight keywords
-                        // and add synonyms
-                        for (String kw : highlightterms) {
-
-                            // get the synonym-line for each search term
-                            String[] synline = synonyms.getSynonymLineFromAny(kw, false);
-
-                            // if we have synonyms...
-                            if (synline != null) {
-                                // iterate synonyms
-                                for (String sy : synline) {
-                                    // add them to the linked list, if they are new
-                                    if (!highlight.contains(sy)) {
-                                        highlight.add(sy);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    HtmlUbbUtil.setHighlighTerms(highlight.toArray(new String[highlight.size()]),
-                            HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
-                            settings.getHighlightWholeWord());
-
-                } else
-                    HtmlUbbUtil.setHighlighTerms(null,
-                            HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
-                            settings.getHighlightWholeWord());
-            } else
-                HtmlUbbUtil.setHighlighTerms(null,
-                        HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
-                        settings.getHighlightWholeWord());
+            updateHighlightedTerms();
 
             displayZettelContent(nr);
 
@@ -3970,6 +3917,62 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             // en- or disable those actions which are related to the displaying of the current entry
             setCurrentEntryShown(displayedZettel != data.getCurrentZettelPos());
         }
+    }
+
+    // update highlight-terms
+    // either retrieve the keywords of the displayed entry
+    //       or set it to null.
+    // get the keywords which should be highlighted, if highlighting keywords is activated.
+    // check whether keywords should be highlighted at all
+    private void updateHighlightedTerms() {
+        if (settings.getHighlightKeywords()) {
+
+            // retrieve highlight terms
+            String[] highlightterms = data.getSeparatedKeywords(displayedZettel);
+
+            // create new linked list that will contain all highlight-terms, including
+            // the related synonyms of the highlight-terms
+            LinkedList<String> highlight = new LinkedList<>();
+
+            // check whether we have any keywords to highlight
+            if (highlightterms != null && highlightterms.length > 0) {
+                highlight.addAll(Arrays.asList(highlightterms));
+
+                // check whether synonyms should be included as well
+                if (settings.getSearchAlwaysSynonyms()) {
+
+                    // iterate all current highlight keywords
+                    // and add synonyms
+                    for (String kw : highlightterms) {
+
+                        // get the synonym-line for each search term
+                        String[] synline = synonyms.getSynonymLineFromAny(kw, false);
+
+                        // if we have synonyms...
+                        if (synline != null) {
+                            // iterate synonyms
+                            for (String sy : synline) {
+                                // add them to the linked list, if they are new
+                                if (!highlight.contains(sy)) {
+                                    highlight.add(sy);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                HtmlUbbUtil.setHighlighTerms(highlight.toArray(new String[highlight.size()]),
+                        HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                        settings.getHighlightWholeWord());
+
+            } else
+                HtmlUbbUtil.setHighlighTerms(null,
+                        HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                        settings.getHighlightWholeWord());
+        } else
+            HtmlUbbUtil.setHighlighTerms(null,
+                    HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS,
+                    settings.getHighlightWholeWord());
     }
 
     /**
