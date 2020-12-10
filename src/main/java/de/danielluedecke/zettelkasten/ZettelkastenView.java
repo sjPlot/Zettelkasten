@@ -1217,6 +1217,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         initAcceleratorTable();
         // init the icons of the toolbar, whether they are small, medium or large
         initToolbarIcons(true);
+
         // when we have a mac, we need an extra quit-handler...
         if (PlatformUtil.isMacOS()) {
             setupMacOSXApplicationListener();
@@ -1244,6 +1245,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             initVariables();
             updateDisplay();
         }
+
         // check for updates, if set
         if (settings.getAutoUpdate()) {
             Task cfuT = checkForUpdate();
@@ -1257,8 +1259,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             tS.execute(cfuT);
             tM.setForegroundTask(cfuT);
         }
+
         // init auto backup-timer
         makeAutoBackupTimer = new Timer();
+
         // this timer should start after 5 minutes and update every 5 minutes
         makeAutoBackupTimer.schedule(new AutoBackupTimer(), Constants.autobackupUpdateStart, Constants.autobackupUpdateInterval);
     }
