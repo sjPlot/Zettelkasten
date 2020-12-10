@@ -36,12 +36,16 @@ import de.danielluedecke.zettelkasten.ToolbarIcons;
 import de.danielluedecke.zettelkasten.ZettelkastenApp;
 import de.danielluedecke.zettelkasten.ZettelkastenView;
 import de.danielluedecke.zettelkasten.database.*;
-import de.danielluedecke.zettelkasten.database.BibTeX;
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
-import java.awt.Desktop;
-import java.awt.Frame;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
+import javax.swing.*;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
@@ -53,6 +57,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -60,18 +65,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.parser.ParserDelegator;
-
-import org.jdom2.Attribute;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 
 /**
  *
@@ -1309,7 +1302,7 @@ public class Tools {
      * @return a cleaned string of that entry's content that does no longer
      * contain any UBB-Format-tags
      */
-    public static String removeUbbFromString(String content, boolean includeMarkdown) {
+    public static String removeUbbTagsFromString(String content, boolean includeMarkdown) {
         String dummy = "";
         if (content != null && !content.isEmpty()) {
             dummy = content.replaceAll("\\[k\\]", "")

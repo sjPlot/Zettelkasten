@@ -6223,7 +6223,7 @@ public class Daten {
 
         if (!content.isEmpty()) {
             // return the cleaned string
-            result = Tools.removeUbbFromString(content, true);
+            result = Tools.removeUbbTagsFromString(content, true);
         }
         return result;
     }

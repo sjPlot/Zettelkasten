@@ -296,7 +296,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
                             // convert footnotes
                             zc = HtmlUbbUtil.convertFootnotesToPlain(dataObj, bibtexObj, settingsObj, zc);
                             // remove any non-compatible UBB tags
-                            String zettelcontent = Tools.removeUbbFromString(zc, false);
+                            String zettelcontent = Tools.removeUbbTagsFromString(zc, false);
                             // if we have content, add it.
                             if (!zettelcontent.isEmpty()) {
                                 exportPage.append(zettelcontent);
@@ -572,10 +572,10 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
         // entry was not modified - thus we retrieve the "original" entry.
         if (null == text || text.isEmpty()) {
             // get cleanded content, for plain text without any ubb-tags
-            text = Tools.removeUbbFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
+            text = Tools.removeUbbTagsFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
         } else {
             // else clean text from ubb-tags
-            text = Tools.removeUbbFromString(text, false);
+            text = Tools.removeUbbTagsFromString(text, false);
         }
         // check whether the user wants to export titles.
         // check whether the user wants to export titles.

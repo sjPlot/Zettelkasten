@@ -1578,7 +1578,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                 // ubb-tags to HTML. this is done here...
                 else {
                     // also cleaned text for wordcounter
-                    sbWordCountDisplayTask.append(Tools.removeUbbFromString(text, true)).append(" ");
+                    sbWordCountDisplayTask.append(Tools.removeUbbTagsFromString(text, true)).append(" ");
                     // get the html-text for an entry which content is passed as parameter...
                     text = HtmlUbbUtil.getHtmlContentForDesktop(dataObj,
                             bibtexObj, settingsObj, text, nr, isHeadingVisible,
