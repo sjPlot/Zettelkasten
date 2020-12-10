@@ -2587,9 +2587,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             tb_addtodesktop.setVisible(settings.getShowAllIcons());
             tb_find.setVisible(settings.getShowAllIcons());
         }
-        if (settings.isSeaGlass()) {
-            makeSeaGlassToolbar();
-        }
+
     }
 
     /**
@@ -11075,41 +11073,6 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         // </editor-fold>
 
         // </editor-fold>
-    }
-
-    private void makeSeaGlassToolbar() {
-        Tools.makeTexturedToolBarButton(tb_newEntry, Tools.SEGMENT_POSITION_FIRST);
-        Tools.makeTexturedToolBarButton(tb_open, Tools.SEGMENT_POSITION_MIDDLE);
-        Tools.makeTexturedToolBarButton(tb_save, Tools.SEGMENT_POSITION_LAST);
-        if (settings.getShowAllIcons()) {
-            Tools.makeTexturedToolBarButton(tb_edit, Tools.SEGMENT_POSITION_FIRST);
-            Tools.makeTexturedToolBarButton(tb_delete, Tools.SEGMENT_POSITION_MIDDLE);
-            Tools.makeTexturedToolBarButton(tb_copy, Tools.SEGMENT_POSITION_MIDDLE);
-            Tools.makeTexturedToolBarButton(tb_paste, Tools.SEGMENT_POSITION_MIDDLE);
-            Tools.makeTexturedToolBarButton(tb_selectall, Tools.SEGMENT_POSITION_LAST);
-        } else {
-            Tools.makeTexturedToolBarButton(tb_copy, Tools.SEGMENT_POSITION_FIRST);
-            Tools.makeTexturedToolBarButton(tb_paste, Tools.SEGMENT_POSITION_LAST);
-        }
-        Tools.makeTexturedToolBarButton(tb_addmanlinks, Tools.SEGMENT_POSITION_FIRST);
-        Tools.makeTexturedToolBarButton(tb_addluhmann, Tools.SEGMENT_POSITION_MIDDLE);
-        if (settings.getShowAllIcons()) {
-            Tools.makeTexturedToolBarButton(tb_addbookmark, Tools.SEGMENT_POSITION_MIDDLE);
-            Tools.makeTexturedToolBarButton(tb_addtodesktop, Tools.SEGMENT_POSITION_LAST);
-        } else {
-            Tools.makeTexturedToolBarButton(tb_addbookmark, Tools.SEGMENT_POSITION_LAST);
-        }
-        if (settings.getShowAllIcons()) {
-            Tools.makeTexturedToolBarButton(tb_find, Tools.SEGMENT_POSITION_FIRST);
-            Tools.makeTexturedToolBarButton(tb_first, Tools.SEGMENT_POSITION_MIDDLE);
-        } else {
-            Tools.makeTexturedToolBarButton(tb_first, Tools.SEGMENT_POSITION_FIRST);
-        }
-        Tools.makeTexturedToolBarButton(tb_prev, Tools.SEGMENT_POSITION_MIDDLE);
-        Tools.makeTexturedToolBarButton(tb_next, Tools.SEGMENT_POSITION_MIDDLE);
-        Tools.makeTexturedToolBarButton(tb_last, Tools.SEGMENT_POSITION_LAST);
-        toolBar.setPreferredSize(new java.awt.Dimension(toolBar.getSize().width, Constants.seaGlassToolbarHeight));
-        toolBar.add(new javax.swing.JToolBar.Separator(), 0);
     }
 
     public boolean isEntriesAvailable() {
