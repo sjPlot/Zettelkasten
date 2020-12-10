@@ -1113,13 +1113,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         // before components are drawn, set the default look and feel for this application
         try {
             setDefaultLookAndFeel();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         // setup the local for the default actions cut/copy/paste
