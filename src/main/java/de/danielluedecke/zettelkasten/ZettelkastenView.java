@@ -2801,8 +2801,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected boolean importString(JComponent c, String str) {
                 // get drop-component, i.e. the jTreeDesktop
                 javax.swing.JTree t = (javax.swing.JTree) c;
+
                 // retrieve selected node
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) t.getSelectionPath().getLastPathComponent();
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) Objects.requireNonNull(t.getSelectionPath()).getLastPathComponent();
+
                 // check for valid drop-string
                 if (str != null) {
                     // each received string consists of two lines. the first one with information
@@ -2822,7 +2824,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                     // this tree. that means, we have to delete the drag-source, i.e.
                     // the dragged node that was moved to the new location
                     if (nodepath != null && sourceinfo.equals(Constants.DRAG_SOURCE_JTREELUHMANN)) {
-                        // retrieve "depth" of treepathes of nodes
+                        // retrieve "depth" of tree paths of nodes
                         int draglevel = nodepath.length;
                         int droplevel = selectedNode.getLevel();
                         // retrieve parent of drop-location
@@ -2836,7 +2838,9 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                                 int dropentrynr = retrieveEntryNrFromLuhmann(parent);
                                 // retrieve entry-number of dragged entry.
                                 int draggedentrynr = Integer.parseInt(dropinformation[1]);
+
                                 // retrieve insert-index
+                                // FIXME A "NullPointerException" could be thrown; "parent" is nullable here.
                                 int insertIndex = (selectedNode.isRoot()) ? 0 : parent.getIndex(selectedNode) + 1;
                                 // delete moved entry from luhmann-numbers of source-entry
                                 data.deleteLuhmannNumber(dropentrynr, draggedentrynr);
@@ -4055,7 +4059,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * This methods retrieves the number of a selected entry from the
      * jTreeLuhmann
      *
-     * @return The number of the selected entry, or -1 if an error occured
+     * @return The number of the selected entry, or -1 if an error occurred
      */
     private int retrieveEntryNrFromLuhmann() {
         // retrieve selected node
@@ -4067,20 +4071,20 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * jTreeLuhmann
      *
      * @param node
-     * @return The number of the selected entry, or -1 if an error occured
+     * @return The number of the selected entry, or -1 if an error occurred
      */
     private int retrieveEntryNrFromLuhmann(DefaultMutableTreeNode node) {
         // if we have a valid selection, go on...
         if (node != null) {
             // get user data
             TreeUserObject userObject = (TreeUserObject) node.getUserObject();
-            // retrieve the node's id (i.e. entrynumber
+            // retrieve the node's id (i.e. entry number
             String text = userObject.getId();
             try {
-                int nr = Integer.parseInt(text);
-                return nr;
+                return Integer.parseInt(text);
             } catch (NumberFormatException e) {
-                Constants.zknlogger.log(Level.WARNING, "Node was: {0}{1}Retrieved Number was: {2}{3}{4}",
+                Constants.zknlogger.log(Level.WARNING,
+                        "Node was: {0}{1}Retrieved Number was: {2}{3}{4}",
                         new Object[]{node.toString(), System.lineSeparator(), text, System.lineSeparator(), e.getLocalizedMessage()});
                 return -1;
             }
@@ -9257,7 +9261,9 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     public void exportBookmarksToSearch() {
         // create array with export entries
         int[] entries = createExportBookmarks();
+
         // copy all bookmarked entry-numbers to that array
+        // FIXME A "NullPointerException" could be thrown; "entries" is nullable here
         for (int cnt = 0; cnt < entries.length; cnt++) {
             entries[cnt] = bookmarks.getBookmarkEntry(cnt);
         }
@@ -9631,7 +9637,9 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                     OutputStream exportfile = null;
                     try {
                         bout = bibtex.saveFile();
+
                         // create filewriter
+                        // FIXME Use try-with-resources or close this "FileOutputStream" in a "finally" clause.
                         exportfile = new FileOutputStream(filepath);
                         // retrieve string
                         String bibdata = bout.toString("UTF-8");
@@ -9697,7 +9705,8 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                     // init output-filewriter
                     Writer exportfile = null;
                     try {
-                        // create filewriter
+                        // FIXME Change this "try" to a try-with-resources
+                        // create file writer
                         exportfile = new FileWriter(filepath);
                         // and save file to disk
                         exportfile.write(finalcontent.toString());
@@ -10025,8 +10034,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             replaceDlg.setLocationRelativeTo(frame);
         }
         ZettelkastenApp.getApplication().show(replaceDlg);
-//      commented, since we want to allow empty find or replace terms
-//        if (!replaceDlg.cancelled && (!replaceDlg.findTerm.isEmpty()&&!replaceDlg.replaceTerm.isEmpty()) ) {
+
         // when the user did not cancel, start replacement now.
         if (!replaceDlg.isCancelled()) {
             // if dialog window isn't already created, do this now
@@ -10252,6 +10260,9 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 inputIsOk = false;
             }
         }
+
+        // FIXME Condition 'cancelled' is always 'true' when reached
+        // FIXME Remove this expression which always evaluates to "true"
         // check whether dialog was cancelled or not
         if (!inputIsOk && cancelled) return;
         // create default timestamp. this is only relevant for importing old data-files (.zkn), because
@@ -10918,7 +10929,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     public void setBackupNecessary() {
-        backupNecessary(bibtex.isModified() | synonyms.isModified() | data.isMetaModified() | data.isModified() | searchrequests.isModified() | bookmarks.isModified() | desktop.isModified());
+        backupNecessary(bibtex.isModified() || synonyms.isModified() || data.isMetaModified() || data.isModified() || searchrequests.isModified() || bookmarks.isModified() || desktop.isModified());
         // update mainframe's toolbar and enable save-function
         if (isBackupNecessary()) {
             setSaveEnabled(true);
@@ -11007,6 +11018,8 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             // get mac os-x application class
             Class appc = Class.forName("com.apple.eawt.Application");
             // create a new instance for it.
+
+            //FIXME Rename "app" which hides the field declared at line 132
             Object app = appc.newInstance();
             // get the application-listener class. here we can set our action to the apple menu
             Class lc = Class.forName("com.apple.eawt.ApplicationListener");
