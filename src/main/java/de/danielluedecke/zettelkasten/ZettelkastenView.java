@@ -10494,7 +10494,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             // return complete array
             return keywords;
         }
-        // ...or null, if error occured.
+        // ...or null, if error occurred.
         return null;
     }
 
@@ -11011,13 +11011,13 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * which provides own about, preferences and quit-menu-items.
      */
     private void setupMacOSXApplicationListener() {
-        // <editor-fold defaultstate="collapsed" desc="Application-listener initiating the stuff for the Apple-menu.">
+
         try {
             // get mac os-x application class
             Class appc = Class.forName("com.apple.eawt.Application");
             // create a new instance for it.
 
-            //FIXME Rename "app" which hides the field declared at line 132
+            // FIXME Rename "app" which hides the field declared at line 132
             Object app = appc.newInstance();
             // get the application-listener class. here we can set our action to the apple menu
             Class lc = Class.forName("com.apple.eawt.ApplicationListener");
@@ -11036,6 +11036,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                     if (method.getName().equals("handleAbout")) {
                         // show own about box
                         showAboutBox();
+                        
                         try {
                             // set handled to true, so other actions won't take place any more.
                             // if we leave this out, a second, system-own aboutbox would be displayed
@@ -11052,27 +11053,30 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                     handleMethod.invoke(event, new Object[]{val});
                 }
             });
+
             // tell about success
             Constants.zknlogger.log(Level.INFO, "Apple Class Loader successfully initiated.");
-            try {
+
+            try { // FIXME Extract this nested try block into a separate method
                 // add application listener that listens to actions on the apple menu items
                 Method m = appc.getMethod("addApplicationListener", lc);
                 m.invoke(app, listener);
+
                 // register that we want that Preferences menu. by default, only the about box is shown
                 // but no pref-menu-item
                 Method enablePreferenceMethod = appc.getMethod("setEnabledPreferencesMenu", new Class[]{boolean.class});
                 enablePreferenceMethod.invoke(app, new Object[]{Boolean.TRUE});
+
                 // tell about success
                 Constants.zknlogger.log(Level.INFO, "Apple Preference Menu successfully initiated.");
+
             } catch (NoSuchMethodException | SecurityException | InvocationTargetException ex) {
                 Constants.zknlogger.log(Level.SEVERE, ex.getLocalizedMessage());
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             Constants.zknlogger.log(Level.SEVERE, e.getLocalizedMessage());
         }
-        // </editor-fold>
 
-        // </editor-fold>
     }
 
     public boolean isEntriesAvailable() {
