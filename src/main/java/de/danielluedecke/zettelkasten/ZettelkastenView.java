@@ -1203,18 +1203,25 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         
         // hide panels for live-search and is-follower-numbers
         jPanelLiveSearch.setVisible(false);
-        // setup the jtree-component
+
+        // setup the jTree component
         initTrees();
+
         // setup a table sorter and visible grids for the JTables
         initTables();
-        // init transferhandler for drag&drop operations
+
+        // init transfer handler for drag&drop operations
         initDragDropTransferHandler();
-        // init the default fontsizes for tables, lists and treeviews
+
+        // init the default font sizes for tables, lists and tree views
         initDefaultFontSize();
+
         // initialise the keystrokes for certain components
         initActionMaps();
+
         // init accelerator table
         initAcceleratorTable();
+
         // init the icons of the toolbar, whether they are small, medium or large
         initToolbarIcons(true);
 
@@ -1226,12 +1233,14 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         // add an exit-listener, which offers saving etc. on
         // exit, when we have unsaved changes to the data file
         getApplication().addExitListener(new ConfirmExit());
+
         // add window-listener. somehow I lost the behaviour that clicking on the frame's
         // upper right cross on Windows OS, quits the application. Instead, it just makes
         // the frame disappear, but does not quit, so it looks like the application was quit
         // but asking for changes took place. So, we simply add a windows-listener additionally
         ZettelkastenView.super.getFrame().addWindowListener(this);
         ZettelkastenView.super.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         // init the progress bar and status icon for
         // the swing worker background thread
         // creates a new class object. This variable is not used, it just associates task monitors to
@@ -1288,10 +1297,6 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     private void initBorders(Settings settingsObj) {
-        /*
-         * Constructor for Matte Border
-         * public MatteBorder(int top, int left, int bottom, int right, Color matteColor)
-         */
         jScrollPane4.setBorder(null);
         jScrollPane3.setBorder(null);
         jScrollPane9.setBorder(null);
@@ -1730,6 +1735,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 }
             }
         });
+
         //
         // here we start with key-listeners
         //
@@ -1746,6 +1752,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 }
             }
         });
+
         jTextFieldLiveSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -2593,23 +2600,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * loaded/saved via the CSettings-class
      */
     private void initAcceleratorTable() {
-        // setting up the accelerator table. we have two possibilities: either assigning
-        // accelerator keys directly with an action like this:
-        //
-        // javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(zettelkasten.ZettelkastenApp.class).getContext().getActionMap(ZettelkastenView.class, this);
-        // AbstractAction ac = (AbstractAction) actionMap.get("newEntry");
-        // KeyStroke controlN = KeyStroke.getKeyStroke("control N");
-        // ac.putValue(AbstractAction.ACCELERATOR_KEY, controlN);
-        //
-        // or setting the accelerator key directly to a menu-item like this:
-        //
-        // newEntryMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.META_MASK));
-        //
-        // we choose the first option, because so we can easily iterate through the xml file
-        // and retrieve action names as well as accelerator keys. this saves a lot of typing work here
-        //
+
         // get the action map
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getContext().getActionMap(ZettelkastenView.class, this);
+
         // iterate the xml file with the accelerator keys for the main window
         for (int cnt = 1; cnt <= acceleratorKeys.getCount(AcceleratorKeys.MAINKEYS); cnt++) {
             // get the action's name
@@ -2620,7 +2614,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 AbstractAction ac = (AbstractAction) actionMap.get(actionname);
                 // get the action's accelerator key
                 String actionkey = acceleratorKeys.getAcceleratorKey(AcceleratorKeys.MAINKEYS, cnt);
-                // check whether we have any valid actionkey
+                // check whether we have any valid action key
                 if (actionkey != null && !actionkey.isEmpty()) {
                     // retrieve keystroke setting
                     KeyStroke ks = KeyStroke.getKeyStroke(actionkey);
@@ -2629,6 +2623,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 }
             }
         }
+
         // now set the mnemonic keys of the menus (i.e. the accelerator keys, which give access
         // to the menu via "alt"+key). since the menus might have different texts, depending on
         // the programs language, we retrieve the menu text and simply set the first char
@@ -2636,7 +2631,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         //
         // ATTENTION! Mnemonic keys are NOT applied on Mac OS, see Apple guidelines for
         // further details:
-        // http://developer.apple.com/DOCUMENTATION/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html#//apple_ref/doc/uid/TP40001909-211867-BCIBDHFJ
+        // https://web.archive.org/web/20080514131707/http://developer.apple.com/DOCUMENTATION/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
         //
         // init the variables
         String menutext;
@@ -2661,9 +2656,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         menutext = windowsMenu.getText();
         mkey = menutext.charAt(0);
         windowsMenu.setMnemonic(mkey);
-        // on Mac OS, at least for the German locale, the File menu is called different
-        // compared to windows or linux. Furthermore, we don't need the about and preferences
-        // menu items, since these are locates on the program's menu item in the apple-menu-bar
+
+        // under Mac OS, at least for the German locale, the File menu is called differently
+        // than under Windows or Linux. Also, we don't need the About and Preferences
+        // menu items, because they are on the program's menu item in the Apple menu bar
         if (PlatformUtil.isMacOS()) {
             fileMenu.setText(getResourceMap().getString("macFileMenuText"));
         }
@@ -2674,14 +2670,14 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * can now order the content of the keyword-lists, author-lists etc. in the
      * jTabbedPane by clicking on the table header.
      * <br><br>
-     * Furthermore, visual settings like gridlines are set here.
+     * Furthermore, visual settings like grid lines are set here.
      * <br><br>
-     * Finally, we setup actionsmaps and associate them with the enter-key. by
+     * Finally, we setup actions maps and associate them with the enter-key. by
      * doing so, we prevent the enter-key from selecting the next line. instead,
-     * a search request is startetd.
+     * a search request is started.
      */
     private void initTables() {
-        // Create custom tablerow-sorter for sorting certain table rows that
+        // Create custom table row sorter for sorting certain table rows that
         // might contain german umlauts
         setCustomTableRowSorter(jTableAuthors, 0);
         setCustomTableRowSorter(jTableKeywords, 0);
@@ -2729,6 +2725,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jTableManLinks.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2749,6 +2746,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jTableBookmarks.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2769,8 +2767,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         // enable drag&drop
         jTreeLuhmann.setDragEnabled(true);
+
         // init transfer handler for tree
         jTreeLuhmann.setTransferHandler(new EntryStringTransferHandler() {
             @Override
@@ -2858,6 +2858,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jListEntryKeywords.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2893,6 +2894,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jTableKeywords.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2917,6 +2919,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jTableAttachments.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2941,6 +2944,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jTableAuthors.setTransferHandler(new EntryStringTransferHandler() {
             @Override
             protected String exportString(JComponent c) {
@@ -2966,25 +2970,29 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             protected void cleanup(JComponent c, boolean remove) {
             }
         });
+
         jEditorPaneEntry.setDragEnabled(true);
         DropTarget dropTarget = new DropTarget(jEditorPaneEntry, this);
     }
 
     /**
-     * This method creates an own tablerow-sorter. this is necessary since we
+     * This method creates an own table row sorter. this is necessary since we
      * can use own comparators here, so we can insert string with German umlauts
      * at the correct position - i.e. "ä" is inserted in "a", and not after "z".
      *
-     * @param table  the table that should get the custom tablerow-sorter
-     * @param column the column where the sorter should be apllied to
+     * @param table  the table that should get the custom table row sorter
+     * @param column the column where the sorter should be applied to
      */
     private void setCustomTableRowSorter(JTable table, int column) {
         // create new table sorter
         TableRowSorter<TableModel> sorter = new TableRowSorter<>();
-        // tell tgis jtable that it has an own sorter
+
+        // tell this jTable that it has an own sorter
         table.setRowSorter(sorter);
+
         // and tell the sorter, which table model to sort.
         sorter.setModel((DefaultTableModel) table.getModel());
+
         // in this table, the first column needs a custom comparator.
         try {
             sorter.setComparator(column, new Comparer());
@@ -2998,8 +3006,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         } catch (IndexOutOfBoundsException e) {
             Constants.zknlogger.log(Level.WARNING, e.getLocalizedMessage());
         }
+
         // get last table sorting
         RowSorter.SortKey sk = settings.getTableSorting(table);
+
         // any sorting found?
         if (sk != null) {
             // create array with sort key
@@ -3327,21 +3337,27 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
 
     /**
      * Clears the trees and the related jlist on the tab with the tree. needed
-     * several times, so we put these codelines into an own method.
+     * several times, so we put these code lines into an own method.
      */
     private void clearTreesAndTables() {
-        // get the treemodel
+        // get the tree model
         DefaultTreeModel dtrm = (DefaultTreeModel) jTreeLuhmann.getModel();
+
         // and first of all, clear the jTree
         dtrm.setRoot(null);
-        // get the treemodel
+
+        // get the tree model
         dtrm = (DefaultTreeModel) jTreeCluster.getModel();
+
         // and first of all, clear the jTree
         dtrm.setRoot(null);
-        // get the treemodel
+
+        // get the tree model
         dtrm = (DefaultTreeModel) jTreeKeywords.getModel();
+
         // and first of all, clear the jTree
         dtrm.setRoot(null);
+
         // also clear the jListCluster on that tab
         clusterList.clear();
         isFollowerList.clear();
@@ -3374,9 +3390,11 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         linkedtitlelist = null;
         linkedattachmentlist = null;
         linkedclusterlist = false;
-        // clear the jtrees
+
+        // clear the jTrees
         clearTreesAndTables();
         displayedZettel = -1;
+
         // hide panels for live-search and is-follower-numbers
         jPanelLiveSearch.setVisible(false);
         /* jPanelManLinks.setVisible(false); */
@@ -3411,21 +3429,24 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     /**
-     * This methods updates the display, i.e. the content of the textfields, the
+     * This methods updates the display, i.e. the content of the text fields, the
      * availability of toolbar icons and menu item
      */
     @Action(enabledProperty = "currentEntryShown")
     public final void updateDisplay() {
         if (data.getCount(Daten.ZKNCOUNT) < 1) {
-            // clear textfields
+            // clear text fields
             jEditorPaneEntry.setText("");
+
             // clear keyword-list
             keywordListModel.clear();
             jTextFieldEntryNumber.setText("");
             statusOfEntryLabel.setText(getResourceMap().getString("entryOfText"));
+
             // set new border text
             Color bcol = null;
             jListEntryKeywords.setBorder(ZknMacWidgetFactory.getTitledBorder(getResourceMap().getString("jListEntryKeywords.border.title"), bcol, settings));
+
             // clear all table contents
             clearTreesAndTables();
         } else {
@@ -3433,11 +3454,13 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             updateDisplayParts(data.getCurrentZettelPos());
             statusOfEntryLabel.setText(getResourceMap().getString("entryOfText") + " " + String.valueOf(data.getCount(Daten.ZKNCOUNT)));
         }
+
         // then update menu items and toolbar icons.
         updateToolbarAndMenu();
+
         // Here we set up the jTabbedPane according to the page to be displayed
         // the keyword list e.g. is only to be displayed when selected - this is done
-        // within the changelistener of the jTabbedPane. The connections of each entry to
+        // within the change listener of the jTabbedPane. The connections of each entry to
         // other entries e.g. has to be updated each time
         updateTabbedPane();
     }
@@ -3456,8 +3479,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         popupKwListLogAnd.setSelected(false);
         viewMenuLinksKwListLogOr.setSelected(true);
         viewMenuLinksKwListLogAnd.setSelected(false);
+
         // save setting
         settings.setLogKeywordlist(Settings.SETTING_LOGKEYWORDLIST_OR);
+
         // and filter the list again
         filterLinks();
     }
@@ -3476,8 +3501,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         popupKwListLogAnd.setSelected(true);
         viewMenuLinksKwListLogOr.setSelected(false);
         viewMenuLinksKwListLogAnd.setSelected(true);
+
         // save setting
         settings.setLogKeywordlist(Settings.SETTING_LOGKEYWORDLIST_AND);
+
         // and filter the list again
         filterLinks();
     }
@@ -3605,34 +3632,47 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     private void setRecentDocumentMenuItem(javax.swing.JMenuItem menuItem, int recentDocNr) {
+
         // first, hide all menu-items
         menuItem.setVisible(false);
+
         // retrieve recent document
         String recDoc = settings.getRecentDoc(recentDocNr);
+
         // check whether we have any valid value
         if (recDoc != null && !recDoc.isEmpty()) {
+
             // make menu visible, if recent document is valid
             menuItem.setVisible(true);
+
             // set filename as text
             menuItem.setText(FileOperationsUtil.getFileName(recDoc));
-            // and set file-not-fouhd-icon
+
+            // and set file-not-found-icon
             updateRecentDocumentMenuIcon(menuItem, recDoc);
         }
     }
 
     private void updateRecentDocumentMenuIcon(javax.swing.JMenuItem menuItem, String recDoc) {
+
         // check whether we have any valid value
         if (recDoc != null && !recDoc.isEmpty()) {
+
             // create icon for file-not-found
             ImageIcon fileNotFoundIcon = Constants.errorIcon;
+
             // create zkn-icon for valid files
             ImageIcon zkn3Icon = Constants.zknicon;
+
             // create tooltip-text for file not found
             String fileNotFountText = getResourceMap().getString("recDocfileNotFoundTxt");
+
             // check whether file exists
             File dummyfile = new File(recDoc);
-            // set either filepath or file-not-found-text as tooltip
+
+            // set either file path or file-not-found-text as tooltip
             menuItem.setToolTipText((dummyfile.exists() ? recDoc : fileNotFountText));
+
             // set either file-not-found-icon or no icon
             menuItem.setIcon((dummyfile.exists()) ? zkn3Icon : fileNotFoundIcon);
         }
@@ -3662,7 +3702,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     /**
      * Here we set up the jTabbedPane according to the page to be displayed the
      * keyword list e.g. is only to be displayed when selected - this is done
-     * within the changelistener of the jTabbedPane. The connections of each
+     * within the change listener of the jTabbedPane. The connections of each
      * entry to other entries e.g. has to be updated each time
      */
     private void updateTabbedPane() {
@@ -3735,31 +3775,39 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
 
     /**
      * This method is called from within the "updateDisplay" method. This method
-     * enables or disables the toolbar icons and menubars, dependent on whether
+     * enables or disables the toolbar icons and menu bars, dependent on whether
      * their function is available or not. This depends on the amount of entries
      * in the program.
      */
     public void updateToolbarAndMenu() {
+
         // store the amount of entries
         int count = data.getCount(Daten.ZKNCOUNT);
+
         // at least one entry necessary to enable following functions
         setEntriesAvailable(count > 0);
+
         // more than one entry necessary to enable following functions
         setMoreEntriesAvailable(count > 1);
+
         // check each selected entries for followers
         setMoreLuhmann(data.hasLuhmannNumbers(data.getCurrentZettelPos()));
+
         // check whether the current entry is bookmarked or not...
         setEntryBookmarked((-1 == bookmarks.getBookmarkPosition(displayedZettel)) && (count > 0));
+
         // check whether current entry is on any desktop or not
         statusDesktopEntryButton.setVisible(desktop.isEntryInAnyDesktop(displayedZettel) && (count > 0));
         statusDesktopEntryButton.setEnabled(desktop.isEntryInAnyDesktop(displayedZettel) && (count > 0));
+
         // retrieve modified data-files
         setSaveEnabled(synonyms.isModified() || data.isMetaModified() || bibtex.isModified() || data.isModified() || bookmarks.isModified() || searchrequests.isModified() || desktop.isModified());
         buttonHistoryBack.setEnabled(data.canHistoryBack());
         buttonHistoryFore.setEnabled(data.canHistoryFore());
         setHistoryBackAvailable(data.canHistoryBack());
         setHistoryForAvailable(data.canHistoryFore());
-        // desktop and search results avaiable
+
+        // desktop and search results available
         setDesktopAvailable(desktop.getCount() > 0);
         setSearchResultsAvailable(searchrequests.getCount() > 0);
         showSearchResultsMenuItem.setEnabled(searchrequests.getCount() > 0);
@@ -3774,18 +3822,23 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * with the jTree when the user selects an entry from that tree.
      */
     private void showEntryFromLuhmann() {
+
         // if no data available, leave method
         if (data.getCount(Daten.ZKNCOUNT) < 1) {
             return;
         }
+
         // retrieve number of selected entry
         int nr = retrieveEntryNrFromLuhmann();
+
         // if we don't have a valid selection, use current entry as reference
         if (-1 == nr) {
             nr = data.getCurrentZettelPos();
         }
+
         // now display only the relevant parts, no complete update of the display
         updateDisplayParts(nr);
+
     }
 
     /**
