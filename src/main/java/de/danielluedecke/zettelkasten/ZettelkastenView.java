@@ -1200,11 +1200,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
 
         // init the search box for the toolbar
         createToolbarSearchbox();
-
-        // if we have mac osx aqua-look, apply leopard style
-        if (settings.isSeaGlass()) {
-            setupSeaGlassStyle();
-        }
+        
         // hide panels for live-search and is-follower-numbers
         jPanelLiveSearch.setVisible(false);
         // setup the jtree-component
