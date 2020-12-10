@@ -4349,10 +4349,13 @@ public class Daten {
      * entry and author
      */
     public String getEntryAsHtml(int pos, String[] segmentKeywords, int sourceframe) {
-        String result = "";
+
         // retrieve the entry
         Element entry = retrieveElement(zknFile, pos);
+
         // if no element exists, return empty array
+        String result = "";
+
         if (null != entry) {// pass the title, content and author information to the html class
 // this class is responsible for doing the layout of the html page
 // which display an entry in the main window's JEditorPane
@@ -6103,14 +6106,17 @@ public class Daten {
      * exist
      */
     public String getZettelContentAsHtml(int pos) {
+
         // retrieve the element from the main xml-file
         Element el = retrieveElement(zknFile, pos);
+
         // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// else return entry as html
+            result = HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
         }
-        // else return entry as html
-        return HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
+        return result;
     }
 
     /**

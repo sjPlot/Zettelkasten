@@ -369,7 +369,20 @@ class DatenTest {
     void deleteAuthor() {
     }
 
+    @Test
+    void getEntryAsHtml() {
+        // "converts" the data into a certain html layout
+    }
 
+    @Test
+    void getZettelContent() {
+        // plain entry content as it is stored in the XML-file, without htnml-conversion.
+    }
+
+    @Test
+    void getZettelContentAsHtml() {
+        // content is returned in HTML-format
+    }
 
     @Test
     void getZettelRating() {
@@ -637,14 +650,6 @@ class DatenTest {
 
     @Test
     void changeEditTimeStamp() {
-    }
-
-    @Test
-    void getZettelContentAsHtml() {
-    }
-
-    @Test
-    void testGetZettelContent() {
     }
 
     @Test
