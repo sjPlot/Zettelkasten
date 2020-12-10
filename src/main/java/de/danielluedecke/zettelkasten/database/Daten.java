@@ -6214,14 +6214,18 @@ public class Daten {
      * removed
      */
     public String getCleanZettelContent(int pos) {
+
         // get the zettel content
         String content = getZettelContent(pos);
-        // if the content is not empty...
+
+        // if content is empty
+        String result = "";
+
         if (!content.isEmpty()) {
             // return the cleaned string
-            return Tools.removeUbbFromString(content, true);
+            result = Tools.removeUbbFromString(content, true);
         }
-        return "";
+        return result;
     }
 
     /**
