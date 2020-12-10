@@ -6094,6 +6094,55 @@ public class Daten {
 
     /**
      * This method returns the content of a certain entry, i.e. the main entry
+     * text (text excerpt or whatever). The content is returned as it is stored
+     * in the XML-datafile. So we have the "plain text" here, <i>with</i>
+     * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
+     * However, you can encode Unicode chars into its equivalent HTML entities
+     * nby setting the parameter {@code encodeUTF} to {@code true}. This is
+     * necessary when exporting entries to HTML or PDF.
+     * <br><br>
+     * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
+     * you need the HTML-formatted entry instead.<br><br>
+     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * need the plain text entry <i>without</i> format-tags.
+     *
+     * @param pos the index number of the entry which content is requested. Must
+     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
+     * @param encodeUTF if {@code true}, unicode characters are encoded to the
+     * equivalent HTML entities.
+     * @return the plain, non-html-converted content of the requested entry as a
+     * string or an empty string if no entry was found or the requested entry
+     * does not exist
+     */
+    public String getZettelContent(int pos, boolean encodeUTF) {
+
+        // retrieve the element from the main xml-file
+        Element el = retrieveElement(zknFile, pos);
+
+        // if element or child element is null, return empty string
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// retrieve entry's content
+            String preparestring = el.getChild(ELEMENT_CONTENT).getText();// create dummy-string-builder
+            StringBuilder buf = new StringBuilder("");// iterate each char of the string
+            for (int i = 0; i < preparestring.length(); i++) {
+                // retrieve char
+                char c = preparestring.charAt(i);
+                // if it's a normal char, append it...
+                if ((int) c < 160) {
+                    buf.append(c);
+                } else {
+                    // else append entity of unicode-char
+                    buf.append("&#").append((int) c).append(";");
+                }
+            }// return converted string
+            result = buf.toString();
+        }
+        return result;
+    }
+
+    /**
+     * This method returns the content of a certain entry, i.e. the main entry
      * text (text excerpt or whatever). The content is returned in
      * HTML-format.<br><br>
      * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
@@ -6117,55 +6166,6 @@ public class Daten {
             result = HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
         }
         return result;
-    }
-
-    /**
-     * This method returns the content of a certain entry, i.e. the main entry
-     * text (text excerpt or whatever). The content is returned as it is stored
-     * in the XML-datafile. So we have the "plain text" here, <i>with</i>
-     * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
-     * However, you can encode Unicode chars into its equivalent HTML entities
-     * nby setting the parameter {@code encodeUTF} to {@code true}. This is
-     * necessary when exporting entries to HTML or PDF.
-     * <br><br>
-     * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
-     * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
-     * need the plain text entry <i>without</i> format-tags.
-     *
-     * @param pos the index number of the entry which content is requested. Must
-     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
-     * @param encodeUTF if {@code true}, unicode characters are encoded to the
-     * equivalent HTML entities.
-     * @return the plain, non-html-converted content of the requested entry as a
-     * string or an empty string if no entry was found or the requested entry
-     * does not exist
-     */
-    public String getZettelContent(int pos, boolean encodeUTF) {
-        // retrieve the element from the main xml-file
-        Element el = retrieveElement(zknFile, pos);
-        // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
-        }
-        // retrieve entry's content
-        String preparestring = el.getChild(ELEMENT_CONTENT).getText();
-        // create dummy-string-builder
-        StringBuilder buf = new StringBuilder("");
-        // iterate each char of the string
-        for (int i = 0; i < preparestring.length(); i++) {
-            // retrieve char
-            char c = preparestring.charAt(i);
-            // if it's a normal char, append it...
-            if ((int) c < 160) {
-                buf.append(c);
-            } else {
-                // else append entity of unicode-char
-                buf.append("&#").append((int) c).append(";");
-            }
-        }
-        // return converted string
-        return buf.toString();
     }
 
     /**
