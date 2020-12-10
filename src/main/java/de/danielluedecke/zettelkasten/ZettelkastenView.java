@@ -1071,7 +1071,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException {
         super(app);
         this.app = app;
-        taskinfo = td;
+
         // store reference to settings-class
         settings = st;
         // store reference to acceleratorKeys-class
@@ -1082,16 +1082,22 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         synonyms = sy;
         // store reference to steno data
         steno = stn;
+        taskinfo = td;
+
         bookmarks = new Bookmarks(this, settings);
         bibtex = new BibTeX(this, settings);
+
         // init all those classes that rely on parameters and could not be initialised
         // before the constructor is called...
         data = new Daten(this, settings, synonyms, bibtex);
+
         // init stream logger, so we have the logging both to a file and a byte array
         StreamHandler sHandler = new StreamHandler(baos_log, new SimpleFormatter());
         Constants.zknlogger.addHandler(sHandler);
+
         // tell logger to log everything
         Constants.zknlogger.setLevel(Level.ALL);
+
         // init file-logger
         FileHandler fh;
         try {
@@ -1110,43 +1116,54 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         } catch (IOException | SecurityException ex) {
             Constants.zknlogger.log(Level.SEVERE, ex.getLocalizedMessage());
         }
+
         // before components are drawn, set the default look and feel for this application
         try {
             setDefaultLookAndFeel();
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
         // setup the local for the default actions cut/copy/paste
         Tools.initLocaleForDefaultActions(org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getContext().getActionMap(ZettelkastenView.class, this));
+
         // init all swing components
         initComponents();
         javax.swing.ToolTipManager.sharedInstance().registerComponent(jEditorPaneIsFollower);
+
         // set application icon
         getFrame().setIconImage(Constants.zknicon.getImage());
+
         //
         // Here we have some bug-fixes, which might occur due to os-bugs or NetBeans bugs...
         //
         initBorders(settings);
+
         // initially, hide the tree-view from keywords-tab
-        // the user can switch between the hierarchic treeview of keywords
+        // the user can switch between the hierarchic tree view of keywords
         // or the simple frequencies in a table. by default, the table-view is activated
         // since this is a new feature, so most people would use table-view in the beginning
         jScrollPane17.setVisible(false);
         jTreeKeywords.setVisible(false);
+
         // hide special menus. these will only be visible according to their
         // related displayed tab
         removeTabMenus();
+
         // init the recent documents
         setRecentDocuments();
-        // attach bibtex-file
+
+        // attach BibTeX file
         // retrieve currently attached file
         File currentlyattachedfile = bibtex.getCurrentlyAttachedFile();
-        // retrieve bibtex-filepath
+
+        // retrieve BibTeX file path
         File bibtexfilepath = bibtex.getFilePath();
-        // only attach bibtex file, if we have a specified filepath
+
+        // only attach BibTeX file, if we have a specified file path
         if (bibtexfilepath != null && bibtexfilepath.exists()) {
-            // if we have no currently attached bibtex-file, or the currently attached bibtex-file
-            // differs from the new selected file of the user, open the bibtex-file now
+            // if we have no currently attached BibTeX file, or the currently attached BibTeX file
+            // differs from the new selected file of the user, open the BibTeX file now
             if ((null == currentlyattachedfile) || (!currentlyattachedfile.toString().equals(bibtexfilepath.toString()))) {
                 // open selected file, using the character encoding of the related reference-manager (i.e.
                 // the programme that has exported the bib-tex-file).
@@ -1162,21 +1179,28 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
             // tell about fail
             Constants.zknlogger.log(Level.INFO, "No BibTeX file specified yet.");
         }
+
         // tick checkbox menu item
         showHighlightKeywords.setSelected(settings.getHighlightKeywords());
+
         // tick checkbox whether keyword-synonyms should also be displayed in the
         // jtableKeywords or not...
         jCheckBoxShowSynonyms.setSelected(settings.getShowSynonymsInTable());
+
         // check whether all followers should be shown in trailing entries tab
         jCheckBoxShowAllLuhmann.setSelected(settings.getShowAllLuhmann());
+
         // set background color
         jEditorPaneEntry.setBackground(new Color(Integer.parseInt(settings.getMainBackgroundColor(), 16)));
+
         // init action-, key- and mouse-listeners for all components. we do this after selecting
         // the two checkboxes above, to avoid triggering unnecessary actions.
         // furthermore, we init the selection listeners for the tables and lists here
         initListeners();
+
         // init the search box for the toolbar
         createToolbarSearchbox();
+
         // if we have mac osx aqua-look, apply leopard style
         if (settings.isSeaGlass()) {
             setupSeaGlassStyle();
