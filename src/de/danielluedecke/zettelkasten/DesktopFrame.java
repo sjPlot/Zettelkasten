@@ -92,16 +92,7 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.AttributeSet;
@@ -260,7 +251,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
      * create a new stringbuilder that will contain the plain text of entries in
      * the editorpane, so we can count the words
      */
-    private final StringBuilder sbWordCountDisplayTask = new StringBuilder("");
+    private final StringBuilder sbWordCountDisplayTask = new StringBuilder();
     /**
      *
      */
@@ -742,7 +733,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                         // if we have any dropped data, go on...
                         if (entries != null && entries.length > 0) {
                             // get converted entry
-                            StringBuilder text = new StringBuilder("");
+                            StringBuilder text = new StringBuilder();
                             for (String entrie : entries) {
                                 try {
                                     text.append(dataObj.getZettelContentAsHtml(Integer.parseInt(entrie)));
@@ -787,7 +778,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         // and remove border from the main panel
         jPanel1.setBorder(null);
         // init toolbar button array
-        javax.swing.JButton toolbarButtons[] = new javax.swing.JButton[]{
+        javax.swing.JButton[] toolbarButtons = new javax.swing.JButton[]{
             tb_newbullet, tb_newentry, tb_modifyentry, tb_cut, tb_copy, tb_paste,
             tb_rename, tb_comment, tb_delete, tb_refresh, tb_addluhmann,
             tb_moveup, tb_movedown
@@ -1166,7 +1157,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         javax.swing.JEditorPane tmpPane = new javax.swing.JEditorPane();
         tmpPane.setEditorKit(jEditorPaneMain.getEditorKit());
         tmpPane.setContentType(jEditorPaneMain.getContentType());
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         sb.append(completePage);
         // if we have any content, insert html-header at the beginning...
         if (sb.length() > 0) {
@@ -1302,7 +1293,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                 // and give information whether the dragged entry is a bullet or an entry
                 retval.append((selectedNode.getAllowsChildren()) ? Constants.DRAG_SOURCE_TYPE_BULLET + "\n" : Constants.DRAG_SOURCE_TYPE_ENTRIES + "\n");
                 // next line contains the entry-number, or -1 if a bullet was selected
-                retval.append(String.valueOf(getSelectedEntryNumber())).append("\n");
+                retval.append(getSelectedEntryNumber()).append("\n");
                 // retrieve treepath of dragged entry/bullet
                 TreePath tp = t.getSelectionPath();
                 // add each single path component to return string, new-line-separated
@@ -1398,13 +1389,13 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                         // if we have any entries left, i.e. not only double entries, add them now
                         if (entrynrs != null && entrynrs.length > 0) {
                             // create new string builder
-                            StringBuilder sb = new StringBuilder("");
+                            StringBuilder sb = new StringBuilder();
                             // iterate all moved/copied/pasted entrynumbers
                             for (int cnt = 0; cnt < entrynrs.length; cnt++) {
                                 // check whether entrynumber already exists
                                 if (!entryExists(entrynrs[cnt], selectedNode)) {
                                     // if not, add it.
-                                    sb.append(String.valueOf(entrynrs[cnt])).append(",");
+                                    sb.append(entrynrs[cnt]).append(",");
                                 }
                             }
                             // delete last comma
@@ -1459,7 +1450,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         }
         // go through all entries and check, whether they exists. if so, remove them from the list,
         // so only valid entries are dropped...
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         for (String singleentry1 : singleentry) {
             if (!entryExists(Integer.parseInt(singleentry1), parent)) {
                 sb.append(singleentry1).append(",");
@@ -1692,7 +1683,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         if (cDisplayTaskIsRunning) {
             return;
         }
-        Task cdT = displayTask();
+        Task<? extends Object, ? extends Void> cdT = displayTask();
         // get the application's context...
         ApplicationContext appC = Application.getInstance().getContext();
         // ...to get the TaskMonitor and TaskService
@@ -1940,7 +1931,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         // the editorpane should scroll to. each found search term has a link-tag with
         // a consecutive numbering (<a name="hl1">, <a name="hl2"> etc...)
         // the variable "findlivepos" contains the number of the current references ankh
-        String ankh = "hl" + String.valueOf(findlivepos);
+        String ankh = "hl" + findlivepos;
         // scroll the the reference
         jEditorPaneMain.scrollToReference(ankh);
         // increase findlivepos to refer to the next reference
@@ -1962,7 +1953,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
             findlivepos = findlivemax;
         }
         // create reference string
-        String ankh = "hl" + String.valueOf(findlivepos);
+        String ankh = "hl" + findlivepos;
         // and scroll to reference
         jEditorPaneMain.scrollToReference(ankh);
     }
@@ -1997,7 +1988,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
             // if we found something...
             if (pos != -1) {
                 // insert linktag before.
-                newtext.insert(pos, "<a name=\"hl" + String.valueOf(counter++) + "\"></a>");
+                newtext.insert(pos, "<a name=\"hl" + counter++ + "\"></a>");
                 // and increase position-index, so we don't have an infinite loop that always finds
                 // the same <span>-tag
                 pos = pos + 40;
@@ -2153,7 +2144,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                 // if the child is a bullet...
                 if (e.getName().equals("bullet")) {
                     // create new stringbuilder
-                    StringBuilder sb = new StringBuilder("");
+                    StringBuilder sb = new StringBuilder();
                     // append name of bullet point
                     sb.append(e.getAttributeValue("name"));
 //                    // and append unique id, which is the element's timestamp
@@ -2230,7 +2221,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                     // succeeds, we have an entry, if a NumberFormatException is thrown, we have a headline.
                     // to treat headline with numbers only as headlines, we add a char to be sure that every
                     // headline will throw an exception when parsing the array's elements to integer.
-                    liste.add("h" + String.valueOf(headerlevel) + e.getAttributeValue("name"));
+                    liste.add("h" + headerlevel + e.getAttributeValue("name"));
                 } else {
                     // now we know we have an entry. so get the entry number...
                     int nr = Integer.parseInt(e.getAttributeValue("id"));
@@ -2324,7 +2315,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
     @Action
     public void newDesktop() {
         // user-input for new desktop-description
-        String newDesk = (String) JOptionPane.showInputDialog(null, resourceMap.getString("newDesktopMsg"), resourceMap.getString("newDesktopTitle"), JOptionPane.PLAIN_MESSAGE);
+        String newDesk = JOptionPane.showInputDialog(null, resourceMap.getString("newDesktopMsg"), resourceMap.getString("newDesktopTitle"), JOptionPane.PLAIN_MESSAGE);
         // if we have any valdi input, go on...
         if ((newDesk != null) && (newDesk.length() > 0)) {
             //  add the description as new element to the desktop-data-class
@@ -2513,7 +2504,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
     @Action(enabledProperty = "bulletSelected")
     public void addBullet() {
         // wait for user input
-        String newBullet = (String) JOptionPane.showInputDialog(null, resourceMap.getString("newBulletMsg"), resourceMap.getString("newBulletTitle"), JOptionPane.PLAIN_MESSAGE);
+        String newBullet = JOptionPane.showInputDialog(null, resourceMap.getString("newBulletMsg"), resourceMap.getString("newBulletTitle"), JOptionPane.PLAIN_MESSAGE);
         // if we have a valid input and no cancel-operation, go on
         if (newBullet != null && newBullet.length() > 0) {
             // now we have to check whether the name of "newBullet" already exists as a bullet on this
@@ -2602,7 +2593,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
     @Action(enabledProperty = "nodeSelected")
     public void addEntry() {
         // wait for user input
-        String newEntries = (String) JOptionPane.showInputDialog(null, resourceMap.getString("newEntryMsg"), resourceMap.getString("newEntryTitle"), JOptionPane.PLAIN_MESSAGE);
+        String newEntries = JOptionPane.showInputDialog(null, resourceMap.getString("newEntryMsg"), resourceMap.getString("newEntryTitle"), JOptionPane.PLAIN_MESSAGE);
         // if we have a valid input and no cancel-operation, go on
         if (newEntries != null && newEntries.length() > 0) {
             addEntries(newEntries);
@@ -2818,7 +2809,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
             newDesktop();
             // when the user added a new desktop, select it
             if (desktopObj.getCount() >= 1) {
-                TreePath tp = new TreePath((TreeNode) jTreeDesktop.getModel().getRoot());
+                TreePath tp = new TreePath(jTreeDesktop.getModel().getRoot());
                 jTreeDesktop.setSelectionPath(tp);
             }
         }
@@ -2837,11 +2828,11 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         // if a valid node is selected, add entries
         if (isNodeSelected()) {
             // create a new stringbuilder
-            StringBuilder sb = new StringBuilder("");
+            StringBuilder sb = new StringBuilder();
             // iterate the array with all entries
             for (int e : entries) {
                 // append entry-number
-                sb.append(String.valueOf(e));
+                sb.append(e);
                 // and a comma
                 sb.append(",");
             }
@@ -2877,7 +2868,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
     @Action(enabledProperty = "luhmannNodeSelected")
     public void addLuhmannComplete() {
         // init string builder
-        luhmannnumbers = new StringBuilder("");
+        luhmannnumbers = new StringBuilder();
         // get recursive Luhmann-Numbers
         fillLuhmannNumbers(getSelectedEntryNumber());
         // add them...
@@ -3058,7 +3049,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                     // desktop-name already existed, so desktop was not added...
                     JOptionPane.showMessageDialog(this, resourceMap.getString("errDesktopNameExistsMsg", archive.getRootElement().getAttributeValue("name")), resourceMap.getString("errDesktopNameExistsTitle"), JOptionPane.PLAIN_MESSAGE);
                     // user-input for new desktop-description
-                    String newDeskName = (String) JOptionPane.showInputDialog(this, resourceMap.getString("newDesktopMsg"), resourceMap.getString("newDesktopTitle"), JOptionPane.PLAIN_MESSAGE);
+                    String newDeskName = JOptionPane.showInputDialog(this, resourceMap.getString("newDesktopMsg"), resourceMap.getString("newDesktopTitle"), JOptionPane.PLAIN_MESSAGE);
                     // check for valid-return value, or if the user cancelled the action
                     if (newDeskName != null && !newDeskName.isEmpty()) {
                         // if everything was ok, set new name
@@ -3410,18 +3401,18 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         DefaultMutableTreeNode selection = (DefaultMutableTreeNode) jTreeDesktop.getLastSelectedPathComponent();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTreeDesktop.getLastSelectedPathComponent();
         // enumerate all children of the node's parent's children...
-        Enumeration<DefaultMutableTreeNode> children = node.getParent().children();
+        Enumeration children = node.getParent().children();
         while (children.hasMoreElements()) {
             try {
                 // get each child
-                node = children.nextElement();
+                node = (DefaultMutableTreeNode) children.nextElement();
                 // if the child of the enumeration equals the selection...
                 if (node.equals(selection)) {
                     // get next node after selected entry
-                    node = children.nextElement();
+                    node = (DefaultMutableTreeNode) children.nextElement();
                     // if the selected entry has another entry behind, return false
                     // otherwise true
-                    return (!isBulletSelected()) ? (node.getAllowsChildren()) : false;
+                    return (!isBulletSelected()) && (node.getAllowsChildren());
                 }
             } catch (NoSuchElementException e) {
                 // if there is no entry after the selected one, return true
@@ -4023,7 +4014,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
      * @return the background task
      */
     @Action
-    public Task displayTask() {
+    public Task<? extends Object, ? extends Void> displayTask() {
         return new createDisplayTask(org.jdesktop.application.Application.getInstance(de.danielluedecke.zettelkasten.ZettelkastenApp.class));
     }
 
@@ -4032,7 +4023,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
 
         // create a new stringbuilder that will contain the final string, i.e.
         // the html-page which we set to the jeditorpane
-        StringBuilder sbDisplayTask = new StringBuilder("");
+        StringBuilder sbDisplayTask = new StringBuilder();
 
         createDisplayTask(org.jdesktop.application.Application app) {
             // Runs on the EDT.  Copy GUI state that
@@ -4198,7 +4189,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                     }
                 }
                 // set count words to label
-                jLabelWordCount.setText("(" + String.valueOf(wordcount) + " " + resourceMap.getString("WordCount") + ", " + String.valueOf(sbWordCountDisplayTask.length()) + " " + resourceMap.getString("CharCount") + ")");
+                jLabelWordCount.setText("(" + wordcount + " " + resourceMap.getString("WordCount") + ", " + sbWordCountDisplayTask.length() + " " + resourceMap.getString("CharCount") + ")");
             }
             return null;
         }
@@ -4311,7 +4302,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBoxDesktop = new javax.swing.JComboBox();
+        jComboBoxDesktop = new javax.swing.JComboBox<String>();
         statusAnimationLabel = new javax.swing.JLabel();
         jButtonShowMultipleOccurencesDlg = new javax.swing.JButton();
         jLabelWordCount = new javax.swing.JLabel();
@@ -4833,7 +4824,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        jComboBoxDesktop.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDesktop.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBoxDesktop.setName("jComboBoxDesktop"); // NOI18N
 
         statusAnimationLabel.setIcon(resourceMap.getIcon("statusAnimationLabel.icon")); // NOI18N
@@ -5540,7 +5531,7 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
     private javax.swing.JButton jButtonLiveNext;
     private javax.swing.JButton jButtonLivePrev;
     private javax.swing.JButton jButtonShowMultipleOccurencesDlg;
-    private javax.swing.JComboBox jComboBoxDesktop;
+    private JComboBox<String> jComboBoxDesktop;
     private javax.swing.JEditorPane jEditorPaneMain;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelWordCount;
