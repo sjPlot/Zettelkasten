@@ -294,7 +294,7 @@ public class CAutoKorrekturEdit extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableAutoKorrektur = (settingsObj.isMacStyle()) ? MacWidgetFactory.createITunesTable(null) : new javax.swing.JTable();
+        jTableAutoKorrektur = (settingsObj.isMacAqua()) ? MacWidgetFactory.createITunesTable(null) : new javax.swing.JTable();
         jButtonCancel = new javax.swing.JButton();
         jButtonApply = new javax.swing.JButton();
 
