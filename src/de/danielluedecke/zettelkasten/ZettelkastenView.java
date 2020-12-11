@@ -538,7 +538,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * @param td
      */
     @SuppressWarnings("LeakingThisInConstructor")
-    public ZettelkastenView(SingleFrameApplication app, Settings st, AcceleratorKeys ak, AutoKorrektur ac, Synonyms sy, StenoData stn, TasksData td) {
+    public ZettelkastenView(SingleFrameApplication app, Settings st, AcceleratorKeys ak, AutoKorrektur ac, Synonyms sy, StenoData stn, TasksData td) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         super(app);
         taskinfo = td;
         // store reference to settings-class
@@ -579,8 +579,10 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
         } catch (IOException | SecurityException ex) {
             Constants.zknlogger.log(Level.SEVERE, ex.getLocalizedMessage());
         }
-        // befor components are drawn, set the default look and feel for this application
+
+        // before components are drawn, set the default look and feel for this application
         setDefaultLookAndFeel();
+
         // setup the local for the default actions cut/copy/paste
         Tools.initLocaleForDefaultActions(org.jdesktop.application.Application.getInstance(de.danielluedecke.zettelkasten.ZettelkastenApp.class).getContext().getActionMap(ZettelkastenView.class, this));
         // init all swing components
@@ -2865,9 +2867,9 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * drawn. This is needed in case the user has changed the default look and
      * feel and we need to set something different than the usual default.
      */
-    private void setDefaultLookAndFeel() {
+    private void setDefaultLookAndFeel() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         try {
-            // System.setProperty("awt.useSystemAAFontSettings", "on");
+
             try { // Try to scale default font size according to screen resolution.
                 Font fm = (Font) UIManager.getLookAndFeelDefaults().get("defaultFont");
                 // check if laf supports default font
@@ -2876,28 +2878,22 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
                 }
             } catch (HeadlessException e) {
             }            
-            // UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+
             String laf = settings.getLookAndFeel();
+
             if (laf.equals(Constants.seaGlassLookAndFeelClassName)) {
                 laf = "com.seaglasslookandfeel.SeaGlassLookAndFeel";
             }
             UIManager.setLookAndFeel(laf);
             // log info
             Constants.zknlogger.log(Level.INFO, "Using following LaF: {0}", settings.getLookAndFeel());
-            // when we have mac os with aqua look and feel, set menubar to main-menubar at top of screen
-            if (settings.isMacAqua()) {
-                System.setProperty("apple.laf.useScreenMenuBar", "true");
-                System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Zettelkasten");
-                MacUtils.makeWindowLeopardStyle(ZettelkastenView.super.getFrame().getRootPane());
-//                WindowUtils.createAndInstallRepaintWindowFocusListener(ZettelkastenView.super.getFrame());
-                WindowUtils.installJComponentRepainterOnWindowFocusChanged(ZettelkastenView.super.getFrame().getRootPane());
-            }
+
             if (settings.isSeaGlass()) {
-                // ZettelkastenView.super.getFrame().getRootPane().putClientProperty("SeaGlass.UnifiedToolbarLook", Boolean.TRUE);
                 ZettelkastenView.super.getFrame().getRootPane().setBackground(ColorUtil.colorSeaGlassGray);
             }
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Constants.zknlogger.log(Level.WARNING, ex.getLocalizedMessage());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         }
     }
 
@@ -3029,24 +3025,25 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
 
     /**
      * This method checks whether a certain menu has already been added to the
-     * menu bar. We need this to avoid multiple occurences of same menus that
+     * menu bar. We need this to avoid multiple occurrences of same menus that
      * are related to the JTabbedPane.
      *
      * @param menu the menu that should be checked for existence
      * @return {@code true} if menu is already visible in the menu bar,
-     * {@code false} othwerwise.
+     * {@code false} otherwise.
      */
     private boolean menuBarHasMenu(javax.swing.JMenu menu) {
+        boolean result = false;
         // iterate all menu items
         for (int cnt = 0; cnt < menuBar.getMenuCount(); cnt++) {
             // check whether requested menu is already added
             // if yes, return true
             if (menuBar.getMenu(cnt) == menu) {
-                return true;
+                result = true;
+                break;
             }
         }
-        // else return false
-        return false;
+        return result;
     }
 
     /**

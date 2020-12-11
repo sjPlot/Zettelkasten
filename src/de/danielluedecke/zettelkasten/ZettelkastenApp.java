@@ -45,6 +45,8 @@ import java.util.Locale;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
+import javax.swing.*;
+
 /**
  * The main class of the application.
  */
@@ -128,7 +130,11 @@ public class ZettelkastenApp extends SingleFrameApplication {
 
             }
         }
-        show(new ZettelkastenView(this, settings, accKeys, autoKorrekt,synonyms,steno,taskdata));
+        try {
+            show(new ZettelkastenView(this, settings, accKeys, autoKorrekt,synonyms,steno,taskdata));
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     
