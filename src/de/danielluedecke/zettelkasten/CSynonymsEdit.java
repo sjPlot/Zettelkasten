@@ -358,7 +358,7 @@ public class CSynonymsEdit extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = (settingsObj.isMacStyle()) ? MacWidgetFactory.createITunesTable(null) : new javax.swing.JTable();
+        jTable1 = (settingsObj.isMacAqua()) ? MacWidgetFactory.createITunesTable(null) : new javax.swing.JTable();
         jButtonCancel = new javax.swing.JButton();
         jButtonApply = new javax.swing.JButton();
         jTextFieldFind = new javax.swing.JTextField();
