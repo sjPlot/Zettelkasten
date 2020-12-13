@@ -121,38 +121,36 @@
                     </gitFlowConfig>
                 </configuration>
             </plugin>
+            <!-- Ported from build.xml, inspired by https://github.com/todowiki/todowiki/blob/master/todowiki-core/pom.xml -->
             <plugin>
-                <groupId>de.perdian.maven.plugins</groupId>
-                <artifactId>macosappbundler-maven-plugin</artifactId>
-                <version>1.9.0</version>
-                <configuration>
-                    <jdk>
-                        <include>false</include>
-                        <!--  <location>target/jre</location> maybe an option for later-->
-                    </jdk>
-                    <plist>
-                        <CFBundleDisplayName>${project.name}</CFBundleDisplayName>
-                        <JVMMainClassName>de.danielluedecke.zettelkasten.ZettelkastenApp</JVMMainClassName>
-                        <JVMVersion>8+</JVMVersion>
-                        <CFBundleDevelopmentRegion>German</CFBundleDevelopmentRegion>
-                        <CFBundleName>${project.name}</CFBundleName>
-                        <CFBundleDisplayName>${project.name}</CFBundleDisplayName>
-                        <CFBundleIdentifier>de.danielluedecke.zettelkasten.ZettelkastenApp</CFBundleIdentifier>
-                        <CFBundleShortVersionString>${project.version}</CFBundleShortVersionString>
-                        <CFBundleIconFile>zkn3_2.icns</CFBundleIconFile>
-                    </plist>
-                    <dmg>
-                        <generate>${zkn.supportsDmg}</generate>
-                        <useGenIsoImage>${zkn.useGenIsoImage}</useGenIsoImage>
-                        <dmgFileName>${project.build.finalName}</dmgFileName>
-                    </dmg>
-
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>run</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask"
+                                         classpath="${basedir}/appbundler-1.0ea.jar"/>
+
+                                <mkdir dir="${basedir}/target/app"/>
+                                <bundleapp outputdirectory="${basedir}/target/app"
+                                           name="Zettelkasten" displayname="Zettelkasten"
+                                           identifier="de.danielluedecke.zettelkasten.ZettelkastenApp"
+                                           shortversion="${project.version}" icon="${basedir}/zkn3_2.icns"
+                                           applicationCategory="public.app-category.developer-tools"
+                                           mainclassname="de/danielluedecke/zettelkasten/ZettelkastenApp"
+                                           copyright="(c) 2001-2015 Daniel Lüdecke">
+                                    <classpath
+                                            file="${basedir}/target/${project.artifactId}-${project.version}.jar"/>
+                                    <option value="-Dapple.laf.useScreenMenuBar=true"/>
+                                </bundleapp>
+                            </target>
+                        </configuration>
                         <goals>
-                            <goal>bundle</goal>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
