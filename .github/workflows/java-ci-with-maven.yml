@@ -22,10 +22,10 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - run: mkdir staging && cp target/*.jar target/*.exe staging  
+      - run: mkdir staging && cp target/*-windows.zip staging
       - uses: actions/upload-artifact@v2
         with:
-          name: Package (.jar and .exe)
+          name: Package (windows.zip)
           path: staging
 
   build-on-macos-latest:
