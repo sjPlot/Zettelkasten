@@ -136,8 +136,6 @@
                         </goals>
                         <configuration>
                             <platform>windows</platform>
-                            <bundleJre>true</bundleJre>
-                            <jrePath>jre1.8.0_271</jrePath>
                             <createZipball>true</createZipball>
                         </configuration>
                     </execution>
