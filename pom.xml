@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.danielluedecke</groupId>
@@ -122,43 +122,18 @@
                 <groupId>io.github.fvarrui</groupId>
                 <artifactId>javapackager</artifactId>
                 <version>1.4.2</version>
-                <configuration>
-                    <mainClass>de.danielluedecke.zettelkasten.ZettelkastenApp</mainClass>
-                    <bundleJre>false</bundleJre>
-                    <generateInstaller>true</generateInstaller>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>bundling-for-linux</id>
                         <phase>package</phase>
                         <goals>
                             <goal>package</goal>
                         </goals>
                         <configuration>
-                            <platform>linux</platform>
-                            <createTarball>true</createTarball>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>bundling-for-mac</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                        <configuration>
-                            <platform>mac</platform>
-                            <createTarball>true</createTarball>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>bundling-for-windows</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                        <configuration>
-                            <platform>windows</platform>
-                            <createZipball>true</createZipball>
+                            <mainClass>de.danielluedecke.zettelkasten.ZettelkastenApp</mainClass>
+                            <bundleJre>false</bundleJre>
+                            <generateInstaller>true</generateInstaller>
+                            <administratorRequired>false</administratorRequired>
+                            <platform>auto</platform>
                         </configuration>
                     </execution>
                 </executions>
