@@ -124,6 +124,7 @@
                 <version>1.4.2</version>
                 <configuration>
                     <mainClass>de.danielluedecke.zettelkasten.ZettelkastenApp</mainClass>
+                    <bundleJre>false</bundleJre>
                     <generateInstaller>true</generateInstaller>
                 </configuration>
                 <executions>
@@ -157,7 +158,6 @@
                         </goals>
                         <configuration>
                             <platform>windows</platform>
-                            <bundleJre>true</bundleJre>
                             <createZipball>true</createZipball>
                         </configuration>
                     </execution>
