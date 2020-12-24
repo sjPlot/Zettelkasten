@@ -22,10 +22,10 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - run: mkdir staging && cp target/*-windows.zip staging
+      - run: mkdir staging && cp target/* staging
       - uses: actions/upload-artifact@v2
         with:
-          name: Package (windows.zip)
+          name: Package (target)
           path: staging
 
   build-on-macos-latest:
@@ -44,4 +44,22 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Package (.dmg and .pkg)
+          path: staging
+
+  build-on-windows-latest:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - run: mkdir staging && cp target/*-windows.zip staging
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package (windows.zip)
           path: staging
