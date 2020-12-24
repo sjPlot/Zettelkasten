@@ -130,7 +130,7 @@
                         </goals>
                         <configuration>
                             <mainClass>de.danielluedecke.zettelkasten.ZettelkastenApp</mainClass>
-                            <bundleJre>false</bundleJre>
+                            <bundleJre>true</bundleJre>
                             <generateInstaller>true</generateInstaller>
                             <administratorRequired>false</administratorRequired>
                             <platform>auto</platform>
