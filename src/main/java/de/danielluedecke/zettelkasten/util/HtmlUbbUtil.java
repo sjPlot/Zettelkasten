@@ -33,27 +33,25 @@
 package de.danielluedecke.zettelkasten.util;
 
 import de.danielluedecke.zettelkasten.ZettelkastenApp;
-import de.danielluedecke.zettelkasten.database.BibTex;
-import de.danielluedecke.zettelkasten.util.misc.Comparer;
+import de.danielluedecke.zettelkasten.database.BibTeX;
 import de.danielluedecke.zettelkasten.database.Daten;
 import de.danielluedecke.zettelkasten.database.Settings;
 import de.danielluedecke.zettelkasten.tasks.export.ExportTools;
-import java.awt.Image;
+import de.danielluedecke.zettelkasten.util.misc.Comparer;
+import org.jdom2.Element;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import org.jdom2.Element;
 
 /**
  * This class is responsible for the creation of a html page of an zettelkasten
@@ -232,7 +230,7 @@ public class HtmlUbbUtil {
         // count total words of entry
         // ***********************************************
         // get complete entry-content, i.e. title and content
-        String wordcoutnstring = dataObj.getZettelTitle(entrynr) + " " + dataObj.getCleanZettelContent(entrynr);
+        String wordcoutnstring = dataObj.getZettelTitle(entrynr) + " " + dataObj.getZettelContentUbbTagsRemoved(entrynr);
         // split complete content at each word
         String[] words = wordcoutnstring.toLowerCase().
                 replace("ä", "ae").
@@ -258,9 +256,7 @@ public class HtmlUbbUtil {
         // ***********************************************
         htmlrating.append(System.lineSeparator()).append("<div class=\"entryrating\">");
         htmlrating.append("<table ");
-        if (PlatformUtil.isJava7OnMac() || PlatformUtil.isJava7OnWindows()) {
-            htmlrating.append("cellspacing=\"0\" ");
-        }
+
         htmlrating.append("class=\"tabentryrating\"><tr>").append(System.lineSeparator());
         // ***********************************************
         // init entry heading with entry nr and word count
@@ -559,7 +555,7 @@ public class HtmlUbbUtil {
      */
     public static String getEntryAsHTML(Settings settings,
             Daten dataObj,
-            BibTex bibtexObj,
+            BibTeX bibtexObj,
             int entrynr,
             String[] segmentKeywords,
             int sourceframe) {
@@ -891,7 +887,7 @@ public class HtmlUbbUtil {
      * @param createHTMLFootnotes
      * @return a converted string with html-tags instead of ubb-tags
      */
-    public static String convertUbbToHtml(Settings settings, Daten dataObj, BibTex bibtexObj, String c, int sourceframe, boolean isExport, boolean createHTMLFootnotes) {
+    public static String convertUbbToHtml(Settings settings, Daten dataObj, BibTeX bibtexObj, String c, int sourceframe, boolean isExport, boolean createHTMLFootnotes) {
         // create new string
         String dummy = replaceUbbToHtml(c, settings.getMarkdownActivated(), (Constants.FRAME_DESKTOP == sourceframe), isExport);
         // add title attributes to manual links
@@ -996,11 +992,11 @@ public class HtmlUbbUtil {
      * @param content
      * @return 
      */
-    public static String convertFootnotesToPlain(Daten data, BibTex bibtexObj, Settings settings, String content) {
+    public static String convertFootnotesToPlain(Daten data, BibTeX bibtexObj, Settings settings, String content) {
         return convertFootnotes(data, bibtexObj, settings, content, false, false);
     }
     
-    private static String convertFootnotes(Daten data, BibTex bibtexObj, Settings settings, String content, boolean isLatex, boolean asHtml) {
+    private static String convertFootnotes(Daten data, BibTeX bibtexObj, Settings settings, String content, boolean isLatex, boolean asHtml) {
         if (isLatex) {
             content = content.replaceAll("\\[fn ([^\\[]*)\\]", "(FN $1)");
         } else {
@@ -1592,7 +1588,7 @@ public class HtmlUbbUtil {
                     String tablecontent = dummy.substring(pos + 7, end);
                     // get table rows
                     String[] tablerows = tablecontent.split(Pattern.quote("<br>"));
-                    // init rowcounter
+                    // init row counter
                     int rowcnt = 0;
                     // iterate all table rows
                     for (String row : tablerows) {
@@ -1641,7 +1637,8 @@ public class HtmlUbbUtil {
                             }
                         }
                     }
-                    // dummy = dummy.substring(0, pos)+"<table border=\"1\">"+tabelle.toString().replace("\\\\", "<br>")+"</table>"+dummy.substring(end+8);
+
+                    // FIXME Platform-Specific Desktop Features #302
                     String tableString = (PlatformUtil.isJava7OnMac() || PlatformUtil.isJava7OnWindows()) ? "<table cellspacing=\"0\">" : "<table>";
                     dummy = dummy.substring(0, pos) + tableString + tabelle.toString().replace("\\\\", "<br>") + "</table>" + dummy.substring(end + 8);
                     pos = pos + tabelle.toString().length();
@@ -2023,7 +2020,7 @@ public class HtmlUbbUtil {
      * @param removeNonStandardTags
      * @return a converted string with html-tags instead of ubb-tags
      */
-    public static String convertUbbToTex(Settings settings, Daten dataObj, BibTex bibtexObj, String c, boolean useFootnoteRef, boolean createFormTag, boolean isDesktop, boolean removeNonStandardTags) {
+    public static String convertUbbToTex(Settings settings, Daten dataObj, BibTeX bibtexObj, String c, boolean useFootnoteRef, boolean createFormTag, boolean isDesktop, boolean removeNonStandardTags) {
         // here we create a path to our image folder. this is needed for
         // converting image tags, since the image ae copied to an own local folder,
         // but the source-information only stores the file name, not the path information.
@@ -2778,7 +2775,7 @@ public class HtmlUbbUtil {
      * @param createHtmlFootnotes
      * @return a string with the html-page-content
      */
-    public static String getHtmlContentForDesktop(Daten dataObj, BibTex bibtexObj, Settings settings, int nr, boolean isHeadingVisible, boolean isEntryNumberVisible, boolean isExport, boolean createHtmlFootnotes) {
+    public static String getHtmlContentForDesktop(Daten dataObj, BibTeX bibtexObj, Settings settings, int nr, boolean isHeadingVisible, boolean isEntryNumberVisible, boolean isExport, boolean createHtmlFootnotes) {
         // get the zettelcontent
         return getHtmlContentForDesktop(dataObj,
                 bibtexObj,
@@ -2856,7 +2853,7 @@ public class HtmlUbbUtil {
      * @param createHtmlFootnotes
      * @return a string with the html-page-content
      */
-    public static String getHtmlContentForDesktop(Daten dataObj, BibTex bibtexObj, Settings settings, String zettelcontent, int nr, boolean isHeadingVisible, boolean isEntryNumberVisible, boolean isExport, boolean createHtmlFootnotes) {
+    public static String getHtmlContentForDesktop(Daten dataObj, BibTeX bibtexObj, Settings settings, String zettelcontent, int nr, boolean isHeadingVisible, boolean isEntryNumberVisible, boolean isExport, boolean createHtmlFootnotes) {
         // create an empty string buffer. this buffer contains the html-string
         // which is being display in the desktop window's main textfield
         StringBuilder retval = new StringBuilder("");

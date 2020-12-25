@@ -36,33 +36,26 @@ import de.danielluedecke.zettelkasten.CMakeFormImage;
 import de.danielluedecke.zettelkasten.ZettelkastenView;
 import de.danielluedecke.zettelkasten.tasks.SaveFileTask;
 import de.danielluedecke.zettelkasten.tasks.export.ExportToZknTask;
-import de.danielluedecke.zettelkasten.util.misc.Comparer;
 import de.danielluedecke.zettelkasten.util.Constants;
 import de.danielluedecke.zettelkasten.util.HtmlUbbUtil;
 import de.danielluedecke.zettelkasten.util.Tools;
+import de.danielluedecke.zettelkasten.util.misc.Comparer;
+import org.jdom2.*;
+
+import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.swing.JOptionPane;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.IllegalAddException;
-import org.jdom2.IllegalDataException;
-import org.jdom2.IllegalNameException;
 
 /**
  * This is the data class. This class stores all the programme data in a JDOM
  * XML Tree. It also provides typical methods like getters and setters, stores
  * the file path, the modified state and so on. All relevant operations need for
  * managing the data file can be found here, except loading (open file) and
- * saving operations. These can be found in "CLoadSave.java".
+ * saving operations. These can be found in {@link CLoadSave}.
  *
  * @author danielludecke
  */
@@ -80,15 +73,15 @@ public class Daten {
     private static final String currentVersion = "3.8";
     public static final String backwardCompatibleVersion = "3.4";
     /**
-     * A refrence to the settings class
+     * A reference to the settings class
      */
     private final Settings settings;
     /**
-     * A refrence to the settings class
+     * A reference to the {@link BibTeX} class
      */
-    private final BibTex bibtexObj;
+    private final BibTeX bibtexObj;
     /**
-     * A refrence to the synonyms class
+     * A reference to the synonyms class
      */
     private final Synonyms synonymsObj;
     /**
@@ -96,8 +89,7 @@ public class Daten {
      */
     private Document zknFile;
     /**
-     * XML Document that Stores the data of entries that should be exportet to
-     * .zkn3-format
+     * XML Document that Stores the data of entries that should be exported to .zkn3-format
      */
     private Document zknFileExport;
     /**
@@ -390,7 +382,7 @@ public class Daten {
      * @param syn
      * @param bib
      */
-    public Daten(ZettelkastenView zkn, Settings s, Synonyms syn, BibTex bib) {
+    public Daten(ZettelkastenView zkn, Settings s, Synonyms syn, BibTeX bib) {
         // initiate the JDOM files and all other data, thus
         // creating an empty "Zettelkasten"
         zknframe = zkn;
@@ -1223,7 +1215,7 @@ public class Daten {
         // create a list of all elements from the given xml file
         try {
             List<?> elementList = doc.getRootElement().getContent();
-            // and return the requestet Element
+            // and return the requested Element
             try {
                 return (Element) elementList.get(pos - 1);
             } catch (IndexOutOfBoundsException e) {
@@ -1509,7 +1501,7 @@ public class Daten {
      * don't want to change the ID attribute.
      */
     private void updateTimestampAndID(Element e, String attr_f, String attr_ts, String attr_id, int freq, String ts, String id) {
-        // set frequency of occurences to 1
+        // set frequency of occurrence to 1
         if (freq != -1) {
             e.setAttribute(attr_f, String.valueOf(freq));
         }
@@ -1556,13 +1548,13 @@ public class Daten {
     }
 
     /**
-     * This method adds several keywords to the keyword xml datafile, without
+     * This method adds several keywords to the keyword XML datafile, without
      * assigning them to a certain entry
      *
      * @param kws the keywords which should be added
      */
     public void addKeywordsToDatabase(String[] kws) {
-        // if keyeord is empty, return
+        // if keyword is empty, return
         if (null == kws || 0 == kws.length) {
             return;
         }
@@ -1581,7 +1573,7 @@ public class Daten {
                         Element k = retrieveElement(keywordFile, emptypos);
                         // set keyword string as new value
                         k.setText(kw);
-                        // set frequency of occurences to 0
+                        // set frequency of occurrences to 0
                         // set timestamp attribute
                         // set ID attribute
                         // but first, check the length of "kw", because we want max. 5 first chars of kw
@@ -1611,7 +1603,7 @@ public class Daten {
                         // and finally add the parameter (new keyword string) to the recently created
                         // keyword element
                         newKeyword.addContent(kw);
-                        // set frequency of occurences to 0
+                        // set frequency of occurrences to 0
                         // set timestamp attribute
                         // set ID attribute
                         // but first, check the length of "kw", because we want max. 5 first chars of kw
@@ -2644,9 +2636,9 @@ public class Daten {
      * @param auth the author which should be added
      * @param freq the new frequency of the author, or - if author already
      * exists, e.g. in case of merging entries or adding existing authors to an
-     * entry - the increasement-step of the frequency-occurences of existing
-     * authors. use "1" if an author is simply added to an entry, so in case the
-     * author already exists, its frequency is increased by 1.
+     * entry - the step of increasing the frequency of occurrence of existing authors.
+     * Use "1" if an author is simply added to an entry, i.e. if the author already exists,
+     * its frequency is increased by 1.
      * @return position of the recently added author, or -1 if author could not
      * be added
      */
@@ -2664,10 +2656,10 @@ public class Daten {
             try {
                 // retrieve existing author
                 Element au = retrieveElement(authorFile, pos);
-                // get the count-value, which indicates the frequency of occurences of this
+                // get the count-value, which indicates the frequency of occurrences of this
                 // author in the whole data file
                 int f = Integer.parseInt(au.getAttributeValue(ATTRIBUTE_FREQUENCIES));
-                // increase frequency of occurences
+                // increase frequency of occurrences
                 // change timestamp attribute
                 updateAuthorTimestampAndID(au, f + freq, Tools.getTimeStampWithMilliseconds(), null);
                 // change modified state
@@ -2688,7 +2680,7 @@ public class Daten {
                 Element au = retrieveElement(authorFile, emptypos);
                 // set author string as new value
                 au.setText(auth);
-                // set frequency of occurences to 1
+                // set frequency of occurrences to 1
                 // set timestamp attribute
                 // set ID attribute
                 // but first, check the length of "auth", because we want max. 5 first chars of auth
@@ -2727,7 +2719,7 @@ public class Daten {
                 // and finally add the parameter (new author string) to the recently created
                     // author element
                     newAuthor.addContent(auth);
-                // set frequency of occurences to 1
+                // set frequency of occurrences to 1
                     // set timestamp attribute
                     // set ID attribute
                     // but first, check the length of "auth", because we want max. 5 first chars of auth
@@ -2763,10 +2755,10 @@ public class Daten {
 
     /**
      * This method adds a new entry to the datafile. The needed parameters come
-     * from the JDialog "CNewEntry.java". This dialog opens an edit-mask so the
-     * user can input the necessary information. If everything is done, the
-     * JDialog retrieves all the information as string(-array)-variables and
-     * simply passes these as paramaters to this method.
+     * from the JDialog {@link de.danielluedecke.zettelkasten.EditorFrame}.
+     * This dialog opens an edit-mask so the user can input the necessary information.
+     * If everything is done, the JDialog retrieves all the information as string(-array)-variables and
+     * simply passes these as parameters to this method.
      * <br>
      * <br>
      * What we have to do here is to check whether the keywords or links e.g.
@@ -2817,7 +2809,7 @@ public class Daten {
         if (content != null && !content.isEmpty()) {
             content = Tools.replaceUnicodeToUbb(content);
         }
-        // create a new zettel-element
+        // create a new zettel element
         Element zettel = new Element(ELEMENT_ZETTEL);
         // check whether we have any empty elements in between where we can insert the new entry
         int emptypos = (editDeletedEntry) ? editDeletedEntryPosition : retrieveFirstEmptyEntry();
@@ -2837,7 +2829,7 @@ public class Daten {
             //
             // create child element with title information
             Element t = new Element(ELEMENT_TITLE);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(t);
             // set value of the child element
             t.setText(title);
@@ -2846,7 +2838,7 @@ public class Daten {
             //
             // create child element with content information
             Element c = new Element(ELEMENT_CONTENT);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(c);
             // set value of the content element
             c.setText(content);
@@ -2857,7 +2849,7 @@ public class Daten {
             //
             // create child element with author information
             Element a = new Element(ELEMENT_AUTHOR);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(a);
             // create empty string buffer which stores the index numbers
             // of the converted authors
@@ -2895,7 +2887,7 @@ public class Daten {
             //
             // create child element with keyword information
             Element k = new Element(ELEMENT_KEYWORD);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(k);
             // create empty string buffer which stores the index numbers
             // of the converted keywords
@@ -2945,15 +2937,15 @@ public class Daten {
             //
             // create child element with link information
             Element h = new Element(ELEMENT_ATTACHMENTS);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(h);
             // add each hyperlink string
             if (links != null && links.length > 0) {
                 // therefor, iterate the array
                 for (String l : links) {
-                    // create a new subchuld-element
+                    // create a new sub link element
                     Element sublink = new Element(ELEMENT_ATTCHILD);
-                    // and add the link-string from the array
+                    // and add the link string from the array
                     sublink.setText(l);
                     h.addContent(sublink);
                 }
@@ -2963,7 +2955,7 @@ public class Daten {
             //
             // create child element with content information
             Element r = new Element(ELEMENT_REMARKS);
-            // and add it to the zettel-element
+            // and add it to the zettel element
             zettel.addContent(r);
             // set value of the content element
             r.setText(remarks);
@@ -3000,12 +2992,12 @@ public class Daten {
             Constants.zknlogger.log(Level.SEVERE, ex.getLocalizedMessage());
             return ADD_ENTRY_ERR;
         }
-        // if we have a follower-number (insert-entry), we have to change the luhmann-tag
-        // of the related entry (which number is passed in the luhmann-variable)
+        // if we have a follower-number (insert-entry), we have to change the luhmann tag
+        // of the related entry (which number is passed in the luhmann variable)
         if (luhmann != -1) {
             // try to add luhmann number
             if (addLuhmannNumber(luhmann, zettelPos)) {
-                // if it was successfull, we can insert this entry
+                // if it was successful, we can insert this entry
                 // after the "parent" entry
                 retval = ADD_LUHMANNENTRY_OK;
             } else {
@@ -3027,7 +3019,7 @@ public class Daten {
      * from the JDialog "CNewEntry.java". This dialog opens an edit-mask so the
      * user can input the necessary information. If everything is done, the
      * JDialog retrieves all the information as string(-array)-variables and
-     * simply passes these as paramaters to this method.
+     * simply passes these as parameters to this method.
      * <br>
      * <br>
      * What we have to do here is to check whether the keywords or links e.g.
@@ -3407,13 +3399,13 @@ public class Daten {
      * on...
      */
     public boolean addLuhmannNumber(int entry, int addvalue) {
-        // check whether entry and addvalue are identical
+        // check whether entry and add value are identical
         if (entry == addvalue) {
             return false;
         }
-        // get the entry where the luhmann-number should be added to
+        // get the entry where the luhmann number should be added to
         Element zettel = retrieveElement(zknFile, entry);
-        // get the entry where the luhmann-number should be added to
+        // get the entry where the luhmann number should be added to
         Element tobeadded = retrieveElement(zknFile, addvalue);
         // if entry does not exist, leave
         if (null == zettel || null == zettel.getChild(ELEMENT_TRAILS)) {
@@ -3423,7 +3415,7 @@ public class Daten {
         if (null == tobeadded) {
             return false;
         }
-        // get the luhmann-numbers  of that entry
+        // get the luhmann numbers of that entry
         String lnr = zettel.getChild(ELEMENT_TRAILS).getText();
         // check whether the addvalue already exists in that entry
         if (!lnr.isEmpty()) {
@@ -3561,11 +3553,11 @@ public class Daten {
      * existed or other errors occured.
      */
     private boolean addManLink(int entry, int addvalue) {
-        // check whether entry and addvalue are identical
+        // check whether entry and add value are identical
         if (entry == addvalue) {
             return false;
         }
-        // get the entry where the luhmann-number should be added to
+        // get the entry where the luhmann number should be added to
         Element zettel = retrieveElement(zknFile, entry);
         // if entry does not exist, leave
         if (null == zettel || null == zettel.getChild(ELEMENT_MANLINKS)) {
@@ -3573,11 +3565,11 @@ public class Daten {
         }
         // get the manual links of that entry
         String lnr = zettel.getChild(ELEMENT_MANLINKS).getText();
-        // check whether the addvalue already exists in that entry
+        // check whether the add value already exists in that entry
         if (!lnr.isEmpty()) {
             // copy all values to an array
             String[] lnrs = lnr.split(",");
-            // go throughh array of current luhmann-numbers
+            // go through array of current luhmann numbers
             for (String exist : lnrs) {
                 try {
                     // if addvalue exist, return false
@@ -3595,7 +3587,7 @@ public class Daten {
         if (sb.length() > 0) {
             sb.append(",");
         }
-        // append the addvalue
+        // append the add value
         sb.append(String.valueOf(addvalue));
         // the the string buffer contains at least two values, we want to sort them
         if (sb.indexOf(",") != -1) {
@@ -4357,18 +4349,21 @@ public class Daten {
      * entry and author
      */
     public String getEntryAsHtml(int pos, String[] segmentKeywords, int sourceframe) {
+
         // retrieve the entry
         Element entry = retrieveElement(zknFile, pos);
+
         // if no element exists, return empty array
-        if (null == entry) {
-            return "";
+        String result = "";
+
+        if (null != entry) {// pass the title, content and author information to the html class
+// this class is responsible for doing the layout of the html page
+// which display an entry in the main window's JEditorPane
+// return the complete html page as string array, first element of the
+// array containing the main entry, second element the author information
+            result = HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
         }
-        // pass the title, content and author information to the html class
-        // this class is responsible for doing the layout of the html page
-        // which display an entry in the main window's JEditorPane
-        // return the complete html page as string array, first element of the
-        // array containing the main entry, second element the author information
-        return HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
+        return result;
     }
 
     /**
@@ -5785,9 +5780,9 @@ public class Daten {
 
     /**
      * This method returns the bibkey-string of an author-value. the
-     * bibkey-string referres to a BibTex-entry in a given BibTex-file, so the
+     * bibkey-string referres to a BibTeX-entry in a given BibTeX-file, so the
      * "formatted" author of the author-value saved in our authorXml-file can be
-     * retrieved via a BibTex-File.<br><br>
+     * retrieved via a BibTeX-File.<br><br>
      * This attribute is optional, so {@code null} might be returned.
      *
      * @param pos the index number of the author which you are looking for.
@@ -5803,9 +5798,9 @@ public class Daten {
 
     /**
      * This method returns the bibkey-string of an author-value. the
-     * bibkey-string referres to a BibTex-entry in a given BibTex-file, so the
+     * bibkey-string referres to a BibTeX-entry in a given BibTeX-file, so the
      * "formatted" author of the author-value saved in our authorXml-file can be
-     * retrieved via a BibTex-File.<br><br>
+     * retrieved via a BibTeX-File.<br><br>
      * This attribute is optional, so {@code null} might be returned.
      *
      * @param au the author-value as string
@@ -5819,9 +5814,9 @@ public class Daten {
 
     /**
      * This method returns the bibkey-string of an author-value. the
-     * bibkey-string referres to a BibTex-entry in a given BibTex-file, so the
+     * bibkey-string referres to a BibTeX-entry in a given BibTeX-file, so the
      * "formatted" author of the author-value saved in our authorXml-file can be
-     * retrieved via a BibTex-File.<br><br>
+     * retrieved via a BibTeX-File.<br><br>
      * This attribute is optional, so {@code null} might be returned.<br><br>
      * This method does the work for both
      * {@link #getAuthorBibKey(java.lang.String) getAuthorBibKey(String)} and
@@ -5851,12 +5846,12 @@ public class Daten {
 
     /**
      * This method sets the bibkey-string of an author-value. the bibkey-string
-     * referres to a BibTex-entry in a given BibTex-file, so the "formatted"
+     * referres to a BibTeX-entry in a given BibTeX-file, so the "formatted"
      * author of the author-value saved in our authorXml-file can be retrieved
-     * via a BibTex-File.
+     * via a BibTeX-File.
      *
      * @param pos the index number of the author which you are looking for
-     * @param key the bibkey of the related BibTex-entry.
+     * @param key the bibkey of the related BibTeX-entry.
      * @return {@code true} if bibkey-attribute was successfully changed,
      * {@code false} if an error occured
      */
@@ -5866,13 +5861,13 @@ public class Daten {
 
     /**
      * This method sets the bibkey-string of an author-value. the bibkey-string
-     * referres to a BibTex-entry in a given BibTex-file, so the "formatted"
+     * referres to a BibTeX-entry in a given BibTeX-file, so the "formatted"
      * author of the author-value saved in our authorXml-file can be retrieved
-     * via a BibTex-File.
+     * via a BibTeX-File.
      *
      * @param au the author-value as string of that author where the
      * bibkey-value should be changed
-     * @param key the bibkey of the related BibTex-entry.
+     * @param key the bibkey of the related BibTeX-entry.
      * @return {@code true} if bibkey-attribute was successfully changed,
      * {@code false} if an error occured
      */
@@ -5892,16 +5887,16 @@ public class Daten {
 
     /**
      * This method sets the bibkey-string of an author-value. the bibkey-string
-     * referres to a BibTex-entry in a given BibTex-file, so the "formatted"
+     * referres to a BibTeX-entry in a given BibTeX-file, so the "formatted"
      * author of the author-value saved in our authorXml-file can be retrieved
-     * via a BibTex-File.<br><br>
+     * via a BibTeX-File.<br><br>
      * This method does the work for both
      * {@link #setAuthorBibKey(java.lang.String, java.lang.String) setAuthorBibKey(String, String)}
      * and
      * {@link #setAuthorBibKey(int, java.lang.String) setAuthorBibKey(int, String)}.
      *
      * @param pos the index number of the author which you are looking for
-     * @param key the bibkey of the related BibTex-entry.
+     * @param key the bibkey of the related BibTeX-entry.
      * @return {@code true} if bibkey-attribute was successfully changed,
      * {@code false} if an error occured
      */
@@ -6077,7 +6072,7 @@ public class Daten {
      * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6099,30 +6094,6 @@ public class Daten {
 
     /**
      * This method returns the content of a certain entry, i.e. the main entry
-     * text (text excerpt or whatever). The content is returned in
-     * HTML-format.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
-     * need the plain text entry <i>without</i> format-tags.
-     *
-     * @param pos the index number of the entry which content is requested. Must
-     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
-     * @return the html-converted content of the requested entry as a string or
-     * an empty string if no entry was found or the requested entry does not
-     * exist
-     */
-    public String getZettelContentAsHtml(int pos) {
-        // retrieve the element from the main xml-file
-        Element el = retrieveElement(zknFile, pos);
-        // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
-        }
-        // else return entry as html
-        return HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
-    }
-
-    /**
-     * This method returns the content of a certain entry, i.e. the main entry
      * text (text excerpt or whatever). The content is returned as it is stored
      * in the XML-datafile. So we have the "plain text" here, <i>with</i>
      * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
@@ -6132,7 +6103,7 @@ public class Daten {
      * <br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6144,30 +6115,57 @@ public class Daten {
      * does not exist
      */
     public String getZettelContent(int pos, boolean encodeUTF) {
+
         // retrieve the element from the main xml-file
         Element el = retrieveElement(zknFile, pos);
+
         // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// retrieve entry's content
+            String preparestring = el.getChild(ELEMENT_CONTENT).getText();// create dummy-string-builder
+            StringBuilder buf = new StringBuilder("");// iterate each char of the string
+            for (int i = 0; i < preparestring.length(); i++) {
+                // retrieve char
+                char c = preparestring.charAt(i);
+                // if it's a normal char, append it...
+                if ((int) c < 160) {
+                    buf.append(c);
+                } else {
+                    // else append entity of unicode-char
+                    buf.append("&#").append((int) c).append(";");
+                }
+            }// return converted string
+            result = buf.toString();
         }
-        // retrieve entry's content
-        String preparestring = el.getChild(ELEMENT_CONTENT).getText();
-        // create dummy-string-builder
-        StringBuilder buf = new StringBuilder("");
-        // iterate each char of the string
-        for (int i = 0; i < preparestring.length(); i++) {
-            // retrieve char
-            char c = preparestring.charAt(i);
-            // if it's a normal char, append it...
-            if ((int) c < 160) {
-                buf.append(c);
-            } else {
-                // else append entity of unicode-char
-                buf.append("&#").append((int) c).append(";");
-            }
+        return result;
+    }
+
+    /**
+     * This method returns the content of a certain entry, i.e. the main entry
+     * text (text excerpt or whatever). The content is returned in
+     * HTML-format.<br><br>
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
+     * need the plain text entry <i>without</i> format-tags.
+     *
+     * @param pos the index number of the entry which content is requested. Must
+     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
+     * @return the html-converted content of the requested entry as a string or
+     * an empty string if no entry was found or the requested entry does not
+     * exist
+     */
+    public String getZettelContentAsHtml(int pos) {
+
+        // retrieve the element from the main xml-file
+        Element el = retrieveElement(zknFile, pos);
+
+        // if element or child element is null, return empty string
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// else return entry as html
+            result = HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
         }
-        // return converted string
-        return buf.toString();
+        return result;
     }
 
     /**
@@ -6215,15 +6213,19 @@ public class Daten {
      * @return the cleaned content of that entry, with all formatting-tags
      * removed
      */
-    public String getCleanZettelContent(int pos) {
+    public String getZettelContentUbbTagsRemoved(int pos) {
+
         // get the zettel content
         String content = getZettelContent(pos);
-        // if the content is not empty...
+
+        // if content is empty
+        String result = "";
+
         if (!content.isEmpty()) {
             // return the cleaned string
-            return Tools.removeUbbFromString(content, true);
+            result = Tools.removeUbbTagsFromString(content, true);
         }
-        return "";
+        return result;
     }
 
     /**
@@ -6494,7 +6496,7 @@ public class Daten {
                         Element timestampedit = timestamp.getChild("edited");
                         // check whether edited-element exists
                         if (null == timestampedit) {
-                            // if timestampedit is null, the element has no edited-element
+                            // if time stamp edit is null, the element has no edited-element
                             // so we add the content of the wrong placed element as new edited-element
                             // create new edited element
                             Element ed = new Element("edited");
@@ -6726,9 +6728,9 @@ public class Daten {
         String[] attributes = new String[]{ELEMENT_TRAILS, ELEMENT_MANLINKS};
         // iterate array
         for (String attr : attributes) {
-            // check whether entry has luhmann-element
+            // check whether entry has luhmann element
             if (zettel.getChild(attr) != null) {
-                // get Luhmann-numbers (trailing-entries)
+                // get Luhmann numbers (trailing-entries)
                 String luh = zettel.getChild(attr).getText();
                 // check whether entry has trailing-numbers
                 if (!luh.isEmpty()) {
@@ -7537,11 +7539,11 @@ public class Daten {
             String currentEntry = String.valueOf(nr);
             // go through complete data set
             while (!innerLoopFound && cnt <= getCount(Daten.ZKNCOUNT)) {
-                // get the luhmann-numbers of each entry
+                // get the luhmann numbers of each entry
                 String[] lnrs = getLuhmannNumbers(cnt).split(",");
-                // now check each number for the occurence of the current entry number
+                // now check each number for the occurrence of the current entry number
                 for (String l : lnrs) {
-                    // when one of the luhmann-numbers equals the current entry number...
+                    // when one of the luhmann numbers equals the current entry number...
                     if (l.equals(currentEntry)) {
                         // we found a parent
                         nr = retval = cnt;
@@ -7554,7 +7556,7 @@ public class Daten {
                         break;
                     }
                 }
-                // inceare loop counter
+                // increase loop counter
                 cnt++;
             }
             // when all entries have been checked and no parent was found
@@ -7735,7 +7737,7 @@ public class Daten {
 
     /**
      * This method extracts manual links from an entry's content that have been
-     * added via the NewEntryFrame.<br><br>
+     * added via the EditorFrame.<br><br>
      * All manual link tags {@code [z #number]text[/z]} will be scanned and the
      * numbers (references to other entries) are extracted. All manual links are
      * returned as integer list.

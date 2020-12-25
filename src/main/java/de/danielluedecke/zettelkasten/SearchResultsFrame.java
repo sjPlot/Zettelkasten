@@ -33,43 +33,15 @@
 
 package de.danielluedecke.zettelkasten;
 
+import de.danielluedecke.zettelkasten.database.*;
 import de.danielluedecke.zettelkasten.mac.MacSourceList;
-import de.danielluedecke.zettelkasten.database.Settings;
-import de.danielluedecke.zettelkasten.database.AcceleratorKeys;
-import de.danielluedecke.zettelkasten.database.SearchRequests;
-import de.danielluedecke.zettelkasten.database.Synonyms;
-import de.danielluedecke.zettelkasten.util.*;
-import de.danielluedecke.zettelkasten.util.misc.DateComparer;
-import de.danielluedecke.zettelkasten.util.misc.Comparer;
-import de.danielluedecke.zettelkasten.database.Daten;
-import de.danielluedecke.zettelkasten.database.BibTex;
-import de.danielluedecke.zettelkasten.database.DesktopData;
 import de.danielluedecke.zettelkasten.mac.ZknMacWidgetFactory;
 import de.danielluedecke.zettelkasten.tasks.TaskProgressDialog;
+import de.danielluedecke.zettelkasten.util.*;
+import de.danielluedecke.zettelkasten.util.misc.Comparer;
+import de.danielluedecke.zettelkasten.util.misc.DateComparer;
+import org.jdesktop.application.Action;
 
-import java.awt.AWTKeyStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.IllegalComponentStateException;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -80,7 +52,19 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.HTML;
-import org.jdesktop.application.Action;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 
 /**
@@ -107,7 +91,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
      * Reference to the settings class.
      */
     private final Settings settingsObj;
-    private final BibTex bibtexObj;
+    private final BibTeX bibtexObj;
     /**
      *
      */
@@ -164,7 +148,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
      * @param bib 
      */
     @SuppressWarnings("LeakingThisInConstructor")
-    public SearchResultsFrame(ZettelkastenView zkn, Daten d, SearchRequests sr, DesktopData desk, Settings s, AcceleratorKeys ak, Synonyms syn, BibTex bib) {
+    public SearchResultsFrame(ZettelkastenView zkn, Daten d, SearchRequests sr, DesktopData desk, Settings s, AcceleratorKeys ak, Synonyms syn, BibTeX bib) {
         searchframe = this;
         // init variables from parameters
         dataObj=d;
@@ -1283,7 +1267,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
             URL imgURL = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/error.png");
             cleanedContent.append("<img border=\"0\" src=\"").append(imgURL).append("\">&#8195;");
             cleanedContent.append(resourceMap.getString("incorrectNestedTagsText"));
-            cleanedContent.append("</div>").append(dataObj.getCleanZettelContent(nr)).append("</body>");
+            cleanedContent.append("</div>").append(dataObj.getZettelContentUbbTagsRemoved(nr)).append("</body>");
             // and display clean content instead
             jEditorPaneSearchEntry.setText(cleanedContent.toString());
         }
@@ -1310,7 +1294,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
             // remember that entry editing came from search window
             mainframe.editEntryFromSearchWindow = true;
             // open edit window
-            mainframe.openEditWindow(true,Integer.parseInt(jTableResults.getValueAt(row, 0).toString()),false,false,-1);
+            mainframe.openEditor(true,Integer.parseInt(jTableResults.getValueAt(row, 0).toString()),false,false,-1);
         }
     }
 
@@ -1876,8 +1860,6 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         }
         dispose();
         setVisible(false);
-        // try to motivate garbage collector
-        System.gc();
     }
     
     
@@ -2019,8 +2001,6 @@ public class SearchResultsFrame extends javax.swing.JFrame {
                         }
                         rateEntryDlg.dispose();
                         rateEntryDlg=null;
-                        // try to motivate garbage collector
-                        System.gc();
                     }
                     catch (NumberFormatException ex) {
                         // log error

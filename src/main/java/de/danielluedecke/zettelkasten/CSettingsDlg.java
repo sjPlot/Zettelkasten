@@ -44,12 +44,13 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
+
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 /**
  * @author danielludecke
@@ -77,15 +78,15 @@ public class CSettingsDlg extends javax.swing.JDialog {
      */
     private final Synonyms synonyms;
     /**
+     * Used to retrieve all installed look'n'feels...
+     */
+    private UIManager.LookAndFeelInfo installed_laf[];
+    /**
      * get the strings for file descriptions from the resource map
      */
     private final org.jdesktop.application.ResourceMap resourceMap
             = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).
             getContext().getResourceMap(CSettingsDlg.class);
-    /**
-     * Used to retrieve all installed look'n'feels...
-     */
-    private UIManager.LookAndFeelInfo installed_laf[];
     /**
      * The different fonts, used to retrieve the font settings and for the
      * font-chooser-dialog
@@ -167,117 +168,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
      */
     private boolean userPathChanges = false;
     private boolean pandocPathChanges = false;
-    private boolean modified = false;
-    private boolean synmodified = false;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonApply;
-    private javax.swing.JButton jButtonBrowseAttachmentPath;
-    private javax.swing.JButton jButtonBrowseBackup;
-    private javax.swing.JButton jButtonBrowseImagePath;
-    private javax.swing.JButton jButtonBrowsePandoc;
-    private javax.swing.JButton jButtonCancel;
-    private javax.swing.JButton jButtonDesktopCSS;
-    private javax.swing.JButton jButtonDesktopFont;
-    private javax.swing.JButton jButtonEditAutokorrekt;
-    private javax.swing.JButton jButtonEditSteno;
-    private javax.swing.JButton jButtonEntryCss;
-    private javax.swing.JButton jButtonFont;
-    private javax.swing.JButton jButtonFontcolor;
-    private javax.swing.JButton jButtonHighlightKeywordStyle;
-    private javax.swing.JButton jButtonHighlightLivesearchStyle;
-    private javax.swing.JButton jButtonHighlightStyle;
-    private javax.swing.JButton jButtonListFont;
-    private javax.swing.JButton jButtonResetDesktopCSS;
-    private javax.swing.JButton jButtonResetEntryCSS;
-    private javax.swing.JButton jButtonSynonymEdit;
-    private javax.swing.JButton jButtonTableBackgroundColor;
-    private javax.swing.JCheckBox jCheckBoxAllToHist;
-    private javax.swing.JCheckBox jCheckBoxAutoCompleteTags;
-    private javax.swing.JCheckBox jCheckBoxAutoUpdate;
-    private javax.swing.JCheckBox jCheckBoxAutobackup;
-    private javax.swing.JCheckBox jCheckBoxAutocorrect;
-    private javax.swing.JCheckBox jCheckBoxCheckNightly;
-    private javax.swing.JCheckBox jCheckBoxDesktopCSS;
-    private javax.swing.JCheckBox jCheckBoxEntryCSS;
-    private javax.swing.JCheckBox jCheckBoxExtraBackup;
-    private javax.swing.JCheckBox jCheckBoxFillNewEntries;
-    private javax.swing.JCheckBox jCheckBoxFootnote;
-    private javax.swing.JCheckBox jCheckBoxFootnoteBraces;
-    private javax.swing.JCheckBox jCheckBoxIconText;
-    private javax.swing.JCheckBox jCheckBoxImgResize;
-    private javax.swing.JCheckBox jCheckBoxJumpToTab;
-    private javax.swing.JCheckBox jCheckBoxLuhmannColSortable;
-    private javax.swing.JCheckBox jCheckBoxRegistry;
-    private javax.swing.JCheckBox jCheckBoxSearchWithoutFormatTags;
-    private javax.swing.JCheckBox jCheckBoxShowAllIcons;
-    private javax.swing.JCheckBox jCheckBoxShowEntryHeadline;
-    private javax.swing.JCheckBox jCheckBoxShowHorGrid;
-    private javax.swing.JCheckBox jCheckBoxShowTableBorder;
-    private javax.swing.JCheckBox jCheckBoxShowToolbar;
-    private javax.swing.JCheckBox jCheckBoxShowVerGrid;
-    private javax.swing.JCheckBox jCheckBoxSteno;
-    private javax.swing.JCheckBox jCheckBoxSynonym;
-    private javax.swing.JCheckBox jCheckBoxSystray;
-    private javax.swing.JCheckBox jCheckBoxUseMacBackgroundColor;
-    private javax.swing.JCheckBox jCheckBoxUseMarkdown;
-    private javax.swing.JCheckBox jCheckBoxUseXDGOpen;
-    private javax.swing.JComboBox jComboBoxBackgroundColors;
-    private javax.swing.JComboBox jComboBoxFonts;
-    private javax.swing.JComboBox jComboBoxIconTheme;
-    private javax.swing.JComboBox jComboBoxLAF;
-    private javax.swing.JComboBox jComboBoxLocale;
-    private javax.swing.JComboBox jComboBoxManualTimestamp;
-    private javax.swing.JComboBox jComboBoxShowAtStartup;
-    private javax.swing.JFormattedTextField jFormattedTextFieldImgHeight;
-    private javax.swing.JFormattedTextField jFormattedTextFieldImgWidth;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabelFontDeskLayout;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelColor;
-    private javax.swing.JLabel jLabelTableColor;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JSlider jSliderDesktopFontSize;
-    private javax.swing.JSlider jSliderFontSize;
-    private javax.swing.JSlider jSliderTextfields;
-    private javax.swing.JSpinner jSpinnerDistHor;
-    private javax.swing.JSpinner jSpinnerDistVer;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextFieldAttachmentPath;
-    private javax.swing.JTextField jTextFieldBackupPath;
-    private javax.swing.JTextField jTextFieldImagePath;
-    private javax.swing.JTextField jTextFieldPandoc;
-    private CFontChooser fontDlg;
-    private CAutoKorrekturEdit autoKorrektEdit;
-    private CStenoEdit stenoEdit;
-    private CHighlightSearchSettings highlightSettingsDlg;
-    private CSynonymsEdit synonymsDlg;
-    private CBiggerEditField biggerEditDlg;
+
     /**
      * @param parent
      * @param s
@@ -477,94 +368,43 @@ public class CSettingsDlg extends javax.swing.JDialog {
     }
 
     private void initListeners() {
-        // these codelines add an escape-listener to the dialog. so, when the user
+        // these code lines add an escape-listener to the dialog. so, when the user
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
-        KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-        ActionListener cancelAction = new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                cancelWindow();
-            }
-        };
+        KeyStroke stroke = KeyStroke.getKeyStroke(VK_ESCAPE, 0);
+
+        ActionListener cancelAction = evt -> cancelWindow();
+
         getRootPane().registerKeyboardAction(cancelAction, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+
         // init selection
         jComboBoxShowAtStartup.setSelectedIndex(settings.getShowAtStartup());
-        // add listener for combobox-showatstartup
-        jComboBoxShowAtStartup.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                setModified(true);
-            }
+
+        jComboBoxShowAtStartup.addActionListener(evt -> setModified(true));
+
+        jComboBoxIconTheme.addActionListener(evt -> {
+            setModified(true);
+            needsupdate = true;
         });
-        // add listener for combobox-showatstartup
-        jComboBoxIconTheme.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                setModified(true);
-                needsupdate = true;
-            }
+
+        jComboBoxLocale.addActionListener(evt -> {
+            setModified(true);
+            lafupdate = true;
         });
-        // add listener for combobox-locale
-        jComboBoxLocale.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                setModified(true);
-                lafupdate = true;
-            }
+
+        jComboBoxLAF.addActionListener(evt -> {
+            setModified(true);
+            lafupdate = true;
         });
-        // add action listener to combo box
-        jComboBoxLAF.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                setModified(true);
-                lafupdate = true;
-            }
-        });
-        // add listener for combobox-showatstartup
-        jComboBoxManualTimestamp.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                setModified(true);
-            }
-        });
-        // add action listener to combo box
-        jComboBoxFonts.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                jLabelColor.setBackground(getFontColor());
-            }
-        });
+
+        jComboBoxManualTimestamp.addActionListener(evt -> setModified(true));
+
+        jComboBoxFonts.addActionListener(evt -> jLabelColor.setBackground(getFontColor()));
         jComboBoxFonts.setSelectedIndex(0);
-        // add action listener to combo box
-        jComboBoxBackgroundColors.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // whenever the user changes something, set "modifedLook" state to true
-                // so the apply-button becomes enabled (this variable is connected to
-                // the button's action)
-                jLabelTableColor.setBackground(getBackgroundColor());
-            }
-        });
+
+        jComboBoxBackgroundColors.addActionListener(evt -> jLabelTableColor.setBackground(getBackgroundColor()));
         jComboBoxBackgroundColors.setSelectedIndex(0);
+
         jTextFieldAttachmentPath.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -581,6 +421,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 checkPath(jTextFieldAttachmentPath);
             }
         });
+
         jTextFieldImagePath.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -597,6 +438,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 checkPath(jTextFieldImagePath);
             }
         });
+
         jTextFieldPandoc.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -616,137 +458,76 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 setModified(true);
             }
         });
-        jCheckBoxAutobackup.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jCheckBoxAutobackup.addActionListener(evt -> setModified(true));
+
+        jCheckBoxShowTableBorder.addActionListener(evt -> {
+            setModified(true);
+            displayupdate = true;
         });
-        jCheckBoxShowTableBorder.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-                displayupdate = true;
-            }
+
+        jCheckBoxAutocorrect.addActionListener(evt -> setModified(true));
+
+        jCheckBoxSteno.addActionListener(evt -> setModified(true));
+
+        jCheckBoxShowEntryHeadline.addActionListener(evt -> {
+            setModified(true);
+            displayupdate = true;
         });
-        jCheckBoxAutocorrect.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jCheckBoxSynonym.addActionListener(evt -> setModified(true));
+
+        jCheckBoxSystray.addActionListener(evt -> setModified(true));
+
+        jCheckBoxFillNewEntries.addActionListener(evt -> setModified(true));
+
+        jCheckBoxAutoUpdate.addActionListener(evt -> {
+            setModified(true);
+            jCheckBoxCheckNightly.setEnabled(jCheckBoxAutoUpdate.isSelected());
         });
-        jCheckBoxSteno.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jCheckBoxCheckNightly.addActionListener(evt -> setModified(true));
+
+        jCheckBoxJumpToTab.addActionListener(evt -> setModified(true));
+
+        jCheckBoxUseMarkdown.addActionListener(evt -> {
+            displayupdate = true;
+            setModified(true);
         });
-        jCheckBoxShowEntryHeadline.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-                displayupdate = true;
-            }
+
+        jCheckBoxUseMacBackgroundColor.addActionListener(evt -> {
+            displayupdate = true;
+            setModified(true);
         });
-        jCheckBoxSynonym.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jCheckBoxShowHorGrid.addActionListener(evt -> setModified(true));
+
+        jCheckBoxShowVerGrid.addActionListener(evt -> setModified(true));
+
+        jCheckBoxAllToHist.addActionListener(evt -> setModified(true));
+
+        jSpinnerDistHor.addChangeListener(evt -> {
+            needsupdate = true;
+            setModified(true);
         });
-        jCheckBoxSystray.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jSpinnerDistVer.addChangeListener(evt -> {
+            needsupdate = true;
+            setModified(true);
         });
-        jCheckBoxFillNewEntries.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
+
+        jSliderFontSize.addChangeListener(evt -> {
+            needsupdate = true;
+            setModified(true);
+            lafupdate = true;
         });
-        jCheckBoxAutoUpdate.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-                jCheckBoxCheckNightly.setEnabled(jCheckBoxAutoUpdate.isSelected());
-            }
+
+        jSliderDesktopFontSize.addChangeListener(evt -> {
+            needsupdate = true;
+            setModified(true);
+            lafupdate = true;
         });
-        jCheckBoxCheckNightly.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxJumpToTab.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxUseMarkdown.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                displayupdate = true;
-                setModified(true);
-            }
-        });
-        jCheckBoxUseMacBackgroundColor.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                displayupdate = true;
-                setModified(true);
-            }
-        });
-        jCheckBoxShowHorGrid.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxShowVerGrid.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxAllToHist.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jSpinnerDistHor.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                needsupdate = true;
-                setModified(true);
-            }
-        });
-        jSpinnerDistVer.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                needsupdate = true;
-                setModified(true);
-            }
-        });
-        jSliderFontSize.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                needsupdate = true;
-                setModified(true);
-                lafupdate = true;
-            }
-        });
-        jSliderDesktopFontSize.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                needsupdate = true;
-                setModified(true);
-                lafupdate = true;
-            }
-        });
+
         jFormattedTextFieldImgWidth.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -754,6 +535,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 setModified(true);
             }
         });
+
         jFormattedTextFieldImgHeight.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -761,364 +543,278 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 setModified(true);
             }
         });
-        jCheckBoxFootnote.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                displayupdate = true;
+
+        jCheckBoxFootnote.addActionListener(evt -> {
+            displayupdate = true;
+            setModified(true);
+        });
+
+        jCheckBoxFootnoteBraces.addActionListener(evt -> setModified(true));
+
+        jCheckBoxSearchWithoutFormatTags.addActionListener(evt -> setModified(true));
+
+        jCheckBoxLuhmannColSortable.addActionListener(evt -> {
+            setModified(true);
+            dataObj.setTitlelistUpToDate(false);
+        });
+
+        jCheckBoxUseXDGOpen.addActionListener(evt -> setModified(true));
+
+        jCheckBoxAutoCompleteTags.addActionListener(evt -> setModified(true));
+
+        jCheckBoxIconText.addActionListener(evt -> {
+            needsupdate = true;
+            setModified(true);
+        });
+
+        jCheckBoxShowToolbar.addActionListener(evt -> {
+            needsupdate = true;
+            setModified(true);
+            jCheckBoxShowAllIcons.setEnabled(jCheckBoxShowToolbar.isSelected());
+        });
+
+        jCheckBoxShowAllIcons.addActionListener(evt -> {
+            needsupdate = true;
+            setModified(true);
+        });
+
+        jCheckBoxEntryCSS.addActionListener(evt -> {
+            lafupdate = true;
+            setModified(true);
+        });
+
+        jCheckBoxDesktopCSS.addActionListener(evt -> {
+            lafupdate = true;
+            setModified(true);
+        });
+
+        jButtonEditAutokorrekt.addActionListener(evt -> {
+            // the button for editing the spellchecking-words was pressed,
+            // so open the window for editing them...
+            if (null == autoKorrektEdit) {
+                // get parent und init window
+                autoKorrektEdit = new CAutoKorrekturEdit(null, autokorrekt, settings);
+                // center window
+                autoKorrektEdit.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(autoKorrektEdit);
+            // change modified state and enable apply-button
+            if (autoKorrektEdit.isModified()) {
                 setModified(true);
             }
+            autoKorrektEdit.dispose();
+            autoKorrektEdit = null;
         });
-        jCheckBoxFootnoteBraces.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
+
+        jButtonListFont.addActionListener(evt -> {
+            // get the selected font
+            Font f = tablefont;
+            // create font-chooser dialog
+            if (null == fontDlg) {
+                fontDlg = new CFontChooser(null, f);
+                fontDlg.setLocationRelativeTo(null);
             }
-        });
-        jCheckBoxSearchWithoutFormatTags.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            ZettelkastenApp.getApplication().show(fontDlg);
+            // if the user has chosen a font, set it
+            if (fontDlg.selectedFont != null) {
+                tablefont = fontDlg.selectedFont;
                 setModified(true);
-            }
-        });
-        jCheckBoxLuhmannColSortable.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-                dataObj.setTitlelistUpToDate(false);
-            }
-        });
-        jCheckBoxUseXDGOpen.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxAutoCompleteTags.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setModified(true);
-            }
-        });
-        jCheckBoxIconText.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                needsupdate = true;
-                setModified(true);
-            }
-        });
-        jCheckBoxShowToolbar.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                needsupdate = true;
-                setModified(true);
-                jCheckBoxShowAllIcons.setEnabled(jCheckBoxShowToolbar.isSelected());
-            }
-        });
-        jCheckBoxShowAllIcons.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                needsupdate = true;
-                setModified(true);
-            }
-        });
-        jCheckBoxEntryCSS.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lafupdate = true;
-                setModified(true);
             }
+            // close and dispose the font-dialog
+            fontDlg.dispose();
+            fontDlg = null;
         });
-        jCheckBoxDesktopCSS.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+        jButtonDesktopFont.addActionListener(evt -> {
+            // get the selected font
+            Font f = desktopfont;
+            // create font-chooser dialog
+            if (null == fontDlg) {
+                fontDlg = new CFontChooser(null, f);
+                fontDlg.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(fontDlg);
+            // if the user has chosen a font, set it
+            if (fontDlg.selectedFont != null) {
+                desktopfont = fontDlg.selectedFont;
+                setModified(true);
                 lafupdate = true;
+            }
+            // close and dispose the font-dialog
+            fontDlg.dispose();
+            fontDlg = null;
+        });
+
+        jButtonBrowseBackup.addActionListener(evt -> {
+            JFileChooser fc = new JFileChooser();
+            // set dialog's title
+            fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
+            // restrict all files as chooseable
+            fc.setAcceptAllFileFilterUsed(false);
+            // only directories should be selected
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fc.showOpenDialog(null);
+            // if a file was chosen, set the file path
+            if (JFileChooser.APPROVE_OPTION == option) {
+                // get the file path...
+                jTextFieldBackupPath.setText(fc.getSelectedFile().toString());
                 setModified(true);
             }
         });
-        jButtonEditAutokorrekt.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // the button for editing the spellchecking-words was pressed,
-                // so open the window for edting them...
-                if (null == autoKorrektEdit) {
-                    // get parent und init window
-                    autoKorrektEdit = new CAutoKorrekturEdit(null, autokorrekt, settings);
-                    // center window
-                    autoKorrektEdit.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(autoKorrektEdit);
-                // change modified state and enable apply-button
-                if (autoKorrektEdit.isModified()) {
-                    setModified(true);
-                }
-                autoKorrektEdit.dispose();
-                autoKorrektEdit = null;
-            }
-        });
-        jButtonListFont.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // get the selected font
-                Font f = tablefont;
-                // create font-chooser dialog
-                if (null == fontDlg) {
-                    fontDlg = new CFontChooser(null, f);
-                    fontDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(fontDlg);
-                // if the user has chosen a font, set it
-                if (fontDlg.selectedFont != null) {
-                    tablefont = fontDlg.selectedFont;
-                    // whenever the user changes something, set "modifedLook" state to true
-                    // so the apply-button becomes enabled (this variable is connected to
-                    // the button's action)
-                    setModified(true);
-                    lafupdate = true;
-                }
-                // close and dispose the font-dialog
-                fontDlg.dispose();
-                fontDlg = null;
-            }
-        });
-        jButtonDesktopFont.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // get the selected font
-                Font f = desktopfont;
-                // create font-chooser dialog
-                if (null == fontDlg) {
-                    fontDlg = new CFontChooser(null, f);
-                    fontDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(fontDlg);
-                // if the user has chosen a font, set it
-                if (fontDlg.selectedFont != null) {
-                    desktopfont = fontDlg.selectedFont;
-                    // whenever the user changes something, set "modifedLook" state to true
-                    // so the apply-button becomes enabled (this variable is connected to
-                    // the button's action)
-                    setModified(true);
-                    lafupdate = true;
-                }
-                // close and dispose the font-dialog
-                fontDlg.dispose();
-                fontDlg = null;
-            }
-        });
-        jButtonBrowseBackup.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                // set dialog's title
-                fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
-                // restrict all files as choosable
-                fc.setAcceptAllFileFilterUsed(false);
-                // only directories should be selected
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int option = fc.showOpenDialog(null);
-                // if a file was chosen, set the filepath
-                if (JFileChooser.APPROVE_OPTION == option) {
-                    // get the filepath...
-                    jTextFieldBackupPath.setText(fc.getSelectedFile().toString());
-                    setModified(true);
-                }
-            }
-        });
-        jButtonBrowseAttachmentPath.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                // set dialog's title
-                fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
-                // restrict all files as choosable
-                fc.setAcceptAllFileFilterUsed(false);
-                // only directories should be selected
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int option = fc.showOpenDialog(null);
-                // if a file was chosen, set the filepath
-                if (JFileChooser.APPROVE_OPTION == option) {
-                    // get the filepath...
-                    jTextFieldAttachmentPath.setText(fc.getSelectedFile().toString());
-                    setModified(true);
-                }
-            }
-        });
-        jButtonBrowsePandoc.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                // set dialog's title
-                fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
-                // restrict all files as choosable
-                fc.setAcceptAllFileFilterUsed(false);
-                // only directories should be selected
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int option = fc.showOpenDialog(null);
-                // if a file was chosen, set the filepath
-                if (JFileChooser.APPROVE_OPTION == option) {
-                    // get the filepath...
-                    jTextFieldPandoc.setText(fc.getSelectedFile().toString());
-                    setModified(true);
-                }
-            }
-        });
-        jButtonBrowseImagePath.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                // set dialog's title
-                fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
-                // restrict all files as choosable
-                fc.setAcceptAllFileFilterUsed(false);
-                // only directories should be selected
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int option = fc.showOpenDialog(null);
-                // if a file was chosen, set the filepath
-                if (JFileChooser.APPROVE_OPTION == option) {
-                    // get the filepath...
-                    jTextFieldImagePath.setText(fc.getSelectedFile().toString());
-                    setModified(true);
-                }
-            }
-        });
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                cancelWindow();
-            }
-        });
-        jButtonEntryCss.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                editCSS(Settings.CUSTOM_CSS_ENTRY);
-            }
-        });
-        jButtonDesktopCSS.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                editCSS(Settings.CUSTOM_CSS_DESKTOP);
-            }
-        });
-        jButtonResetEntryCSS.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                resetCSS(Settings.CUSTOM_CSS_ENTRY);
-            }
-        });
-        jButtonResetDesktopCSS.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                resetCSS(Settings.CUSTOM_CSS_DESKTOP);
-            }
-        });
-        jCheckBoxImgResize.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                setModified(true);
-                displayupdate = true;
-                jFormattedTextFieldImgWidth.setEnabled(jCheckBoxImgResize.isSelected());
-                jFormattedTextFieldImgHeight.setEnabled(jCheckBoxImgResize.isSelected());
-            }
-        });
-        jCheckBoxExtraBackup.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                jTextFieldBackupPath.setEnabled(jCheckBoxExtraBackup.isSelected());
-                jButtonBrowseBackup.setEnabled(jCheckBoxExtraBackup.isSelected());
+
+        jButtonBrowseAttachmentPath.addActionListener(evt -> {
+            JFileChooser fc = new JFileChooser();
+            // set dialog's title
+            fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
+            // restrict all files as chooseable
+            fc.setAcceptAllFileFilterUsed(false);
+            // only directories should be selected
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fc.showOpenDialog(null);
+            // if a file was chosen, set the file path
+            if (JFileChooser.APPROVE_OPTION == option) {
+                // get the file path...
+                jTextFieldAttachmentPath.setText(fc.getSelectedFile().toString());
                 setModified(true);
             }
         });
-        jCheckBoxRegistry.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
+
+        jButtonBrowsePandoc.addActionListener(evt -> {
+            JFileChooser fc = new JFileChooser();
+            // set dialog's title
+            fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
+            // restrict all files as chooseable
+            fc.setAcceptAllFileFilterUsed(false);
+            // only directories should be selected
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fc.showOpenDialog(null);
+            // if a file was chosen, set the file path
+            if (JFileChooser.APPROVE_OPTION == option) {
+                // get the file path...
+                jTextFieldPandoc.setText(fc.getSelectedFile().toString());
                 setModified(true);
-                registryChanges = true;
             }
         });
-        jButtonEditSteno.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // the button for editing the spellchecking-words was pressed,
-                // so open the window for edting them...
-                if (null == stenoEdit) {
-                    // get parent und init window
-                    stenoEdit = new CStenoEdit(null, stenoObj, settings);
-                    // center window
-                    stenoEdit.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(stenoEdit);
-                // change modified state and enable apply-button
-                if (stenoEdit.isModified()) {
-                    setModified(true);
-                }
-                stenoEdit.dispose();
-                stenoEdit = null;
+
+        jButtonBrowseImagePath.addActionListener(evt -> {
+            JFileChooser fc = new JFileChooser();
+            // set dialog's title
+            fc.setDialogTitle(resourceMap.getString("fileChooserTitle"));
+            // restrict all files as chooseable
+            fc.setAcceptAllFileFilterUsed(false);
+            // only directories should be selected
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fc.showOpenDialog(null);
+            // if a file was chosen, set the file path
+            if (JFileChooser.APPROVE_OPTION == option) {
+                // get the file path...
+                jTextFieldImagePath.setText(fc.getSelectedFile().toString());
+                setModified(true);
             }
         });
-        jButtonHighlightStyle.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (null == highlightSettingsDlg) {
-                    highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_SEARCHRESULTS);
-                    highlightSettingsDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(highlightSettingsDlg);
-                if (!highlightSettingsDlg.isCancelled()) {
-                    setModified(true);
-                    lafupdate = true;
-                }
-                highlightSettingsDlg.dispose();
-                highlightSettingsDlg = null;
-            }
+
+        jButtonCancel.addActionListener(evt -> cancelWindow());
+
+        jButtonEntryCss.addActionListener(evt -> editCSS(Settings.CUSTOM_CSS_ENTRY));
+
+        jButtonDesktopCSS.addActionListener(evt -> editCSS(Settings.CUSTOM_CSS_DESKTOP));
+
+        jButtonResetEntryCSS.addActionListener(evt -> resetCSS(Settings.CUSTOM_CSS_ENTRY));
+
+        jButtonResetDesktopCSS.addActionListener(evt -> resetCSS(Settings.CUSTOM_CSS_DESKTOP));
+
+        jCheckBoxImgResize.addActionListener(evt -> {
+            setModified(true);
+            displayupdate = true;
+            jFormattedTextFieldImgWidth.setEnabled(jCheckBoxImgResize.isSelected());
+            jFormattedTextFieldImgHeight.setEnabled(jCheckBoxImgResize.isSelected());
         });
-        jButtonHighlightKeywordStyle.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (null == highlightSettingsDlg) {
-                    highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS);
-                    highlightSettingsDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(highlightSettingsDlg);
-                if (!highlightSettingsDlg.isCancelled()) {
-                    setModified(true);
-                    lafupdate = true;
-                }
-                highlightSettingsDlg.dispose();
-                highlightSettingsDlg = null;
-            }
+
+        jCheckBoxExtraBackup.addActionListener(evt -> {
+            jTextFieldBackupPath.setEnabled(jCheckBoxExtraBackup.isSelected());
+            jButtonBrowseBackup.setEnabled(jCheckBoxExtraBackup.isSelected());
+            setModified(true);
         });
-        jButtonHighlightLivesearchStyle.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (null == highlightSettingsDlg) {
-                    highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_LIVESEARCH);
-                    highlightSettingsDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(highlightSettingsDlg);
-                if (!highlightSettingsDlg.isCancelled()) {
-                    setModified(true);
-                    lafupdate = true;
-                }
-                highlightSettingsDlg.dispose();
-                highlightSettingsDlg = null;
-            }
+
+        jCheckBoxRegistry.addActionListener(evt -> {
+            setModified(true);
+            registryChanges = true;
         });
-        jButtonSynonymEdit.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (null == synonymsDlg) {
-                    synonymsDlg = new CSynonymsEdit(null, synonyms, settings, dataObj);
-                    synonymsDlg.setLocationRelativeTo(null);
-                }
-                ZettelkastenApp.getApplication().show(synonymsDlg);
-                // change modified state and enable apply-button
-                if (synonymsDlg.isModified()) {
-                    setModified(true);
-                    setSynModified(true);
-                }
-                synonymsDlg.dispose();
-                synonymsDlg = null;
+
+        jButtonEditSteno.addActionListener(evt -> {
+            // the button for editing the spellchecking-words was pressed,
+            // so open the window for editing them...
+            if (null == stenoEdit) {
+                // get parent und init window
+                stenoEdit = new CStenoEdit(null, stenoObj, settings);
+                // center window
+                stenoEdit.setLocationRelativeTo(null);
             }
+            ZettelkastenApp.getApplication().show(stenoEdit);
+            // change modified state and enable apply-button
+            if (stenoEdit.isModified()) {
+                setModified(true);
+            }
+            stenoEdit.dispose();
+            stenoEdit = null;
+        });
+
+        jButtonHighlightStyle.addActionListener(evt -> {
+            if (null == highlightSettingsDlg) {
+                highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_SEARCHRESULTS);
+                highlightSettingsDlg.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(highlightSettingsDlg);
+            if (!highlightSettingsDlg.isCancelled()) {
+                setModified(true);
+                lafupdate = true;
+            }
+            highlightSettingsDlg.dispose();
+            highlightSettingsDlg = null;
+        });
+
+        jButtonHighlightKeywordStyle.addActionListener(evt -> {
+            if (null == highlightSettingsDlg) {
+                highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_KEYWORDS);
+                highlightSettingsDlg.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(highlightSettingsDlg);
+            if (!highlightSettingsDlg.isCancelled()) {
+                setModified(true);
+                lafupdate = true;
+            }
+            highlightSettingsDlg.dispose();
+            highlightSettingsDlg = null;
+        });
+
+        jButtonHighlightLivesearchStyle.addActionListener(evt -> {
+            if (null == highlightSettingsDlg) {
+                highlightSettingsDlg = new CHighlightSearchSettings(null, settings, HtmlUbbUtil.HIGHLIGHT_STYLE_LIVESEARCH);
+                highlightSettingsDlg.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(highlightSettingsDlg);
+            if (!highlightSettingsDlg.isCancelled()) {
+                setModified(true);
+                lafupdate = true;
+            }
+            highlightSettingsDlg.dispose();
+            highlightSettingsDlg = null;
+        });
+
+        jButtonSynonymEdit.addActionListener(evt -> {
+            if (null == synonymsDlg) {
+                synonymsDlg = new CSynonymsEdit(null, synonyms, settings, dataObj);
+                synonymsDlg.setLocationRelativeTo(null);
+            }
+            ZettelkastenApp.getApplication().show(synonymsDlg);
+            // change modified state and enable apply-button
+            if (synonymsDlg.isModified()) {
+                setModified(true);
+                setSynModified(true);
+            }
+            synonymsDlg.dispose();
+            synonymsDlg = null;
         });
     }
 
@@ -1140,10 +836,10 @@ public class CSettingsDlg extends javax.swing.JDialog {
                 lafselection = cnt;
             }
         }
-      //  jComboBoxLAF.addItem(Constants.seaGlassLookAndFeelClassName);
-      /*  if (settings.isSeaGlass()) {
+        jComboBoxLAF.addItem(Constants.seaGlassLookAndFeelClassName);
+        if (settings.isSeaGlass()) {
             lafselection = installed_laf.length;
-        }*/
+        }
         // select the last active look and feel
         jComboBoxLAF.setSelectedIndex(lafselection);
     }
@@ -1489,6 +1185,63 @@ public class CSettingsDlg extends javax.swing.JDialog {
     }
 
     /**
+     * This methods gets the color-value of the selected font. while the
+     * original value is stored as string, this method converts the hex-string
+     * into a rgb-Color-value.
+     *
+     * @return the font-color, converted to Color-format
+     */
+    private Color getBackgroundColor() {
+        // init string
+        String c;
+        // get the color-value from the selectet font
+        switch (jComboBoxBackgroundColors.getSelectedIndex()) {
+            case 0:
+                c = tableheadercolor;
+                break;
+            case 1:
+                c = tablerowevencolor;
+                break;
+            case 2:
+                c = tablerowoddcolor;
+                break;
+            case 3:
+                c = entryheadingscolor;
+                break;
+            case 4:
+                c = quotecolor;
+                break;
+            case 5:
+                c = reflistbgcolor;
+                break;
+            case 6:
+                c = mainbgcolor;
+                break;
+            case 7:
+                c = contentbgcolor;
+                break;
+            case 8:
+                c = linkscolor;
+                break;
+            case 9:
+                c = manlinkscolor;
+                break;
+            case 10:
+                c = fnlinkscolor;
+                break;
+            default:
+                c = tableheadercolor;
+                break;
+        }
+        // if we found a color value, go on...
+        if (c != null) {
+            return new Color(Integer.parseInt(c, 16));
+        }
+
+        return Color.BLACK;
+    }
+
+    /**
      * Sets the font color for the chosen font
      *
      * @param c the new color value, received from the color-chooser and
@@ -1545,63 +1298,6 @@ public class CSettingsDlg extends javax.swing.JDialog {
         }
         setModified(true);
         displayupdate = true;
-    }
-
-    /**
-     * This methods gets the color-value of the selected font. while the
-     * original value is stored as string, this method converts the hex-string
-     * into a rgb-Color-value.
-     *
-     * @return the font-color, converted to Color-format
-     */
-    private Color getBackgroundColor() {
-        // init string
-        String c;
-        // get the color-value from the selectet font
-        switch (jComboBoxBackgroundColors.getSelectedIndex()) {
-            case 0:
-                c = tableheadercolor;
-                break;
-            case 1:
-                c = tablerowevencolor;
-                break;
-            case 2:
-                c = tablerowoddcolor;
-                break;
-            case 3:
-                c = entryheadingscolor;
-                break;
-            case 4:
-                c = quotecolor;
-                break;
-            case 5:
-                c = reflistbgcolor;
-                break;
-            case 6:
-                c = mainbgcolor;
-                break;
-            case 7:
-                c = contentbgcolor;
-                break;
-            case 8:
-                c = linkscolor;
-                break;
-            case 9:
-                c = manlinkscolor;
-                break;
-            case 10:
-                c = fnlinkscolor;
-                break;
-            default:
-                c = tableheadercolor;
-                break;
-        }
-        // if we found a color value, go on...
-        if (c != null) {
-            return new Color(Integer.parseInt(c, 16));
-        }
-
-        return Color.BLACK;
     }
 
     /**
@@ -2221,7 +1917,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
         jSliderTextfields = new javax.swing.JSlider();
         jLabel16 = new javax.swing.JLabel();
         jButtonListFont = new javax.swing.JButton();
-        jLabelFontDeskLayout = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
         jButtonDesktopFont = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
         jSliderDesktopFontSize = new javax.swing.JSlider();
@@ -2791,8 +2487,8 @@ public class CSettingsDlg extends javax.swing.JDialog {
         jButtonListFont.setText(resourceMap.getString("jButtonListFont.text")); // NOI18N
         jButtonListFont.setName("jButtonListFont"); // NOI18N
 
-        jLabelFontDeskLayout.setText(resourceMap.getString("jLabelFontDeskLayout.text")); // NOI18N
-        jLabelFontDeskLayout.setName("jLabelFontDeskLayout"); // NOI18N
+        jLabel22.setText(resourceMap.getString("jLabel22.text")); // NOI18N
+        jLabel22.setName("jLabel22"); // NOI18N
 
         jButtonDesktopFont.setText(resourceMap.getString("jButtonDesktopFont.text")); // NOI18N
         jButtonDesktopFont.setName("jButtonDesktopFont"); // NOI18N
@@ -2837,7 +2533,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jButtonListFont))
                                         .addGroup(jPanel11Layout.createSequentialGroup()
-                                                .addComponent(jLabelFontDeskLayout)
+                                                .addComponent(jLabel22)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jButtonDesktopFont))
                                         .addComponent(jLabel11)
@@ -2880,7 +2576,7 @@ public class CSettingsDlg extends javax.swing.JDialog {
                                         .addComponent(jButtonListFont))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelFontDeskLayout)
+                                        .addComponent(jLabel22)
                                         .addComponent(jButtonDesktopFont))
                                 .addGap(17, 17, 17))
         );
@@ -3048,6 +2744,8 @@ public class CSettingsDlg extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean modified = false;
+
     public boolean isModified() {
         return modified;
     }
@@ -3057,7 +2755,8 @@ public class CSettingsDlg extends javax.swing.JDialog {
         this.modified = b;
         firePropertyChange("modified", old, isModified());
     }
-    // End of variables declaration//GEN-END:variables
+
+    private boolean synmodified = false;
 
     public boolean isSynModified() {
         return synmodified;
@@ -3093,4 +2792,116 @@ public class CSettingsDlg extends javax.swing.JDialog {
     public boolean getNeedsLafUpdate() {
         return lafupdate;
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonApply;
+    private javax.swing.JButton jButtonBrowseAttachmentPath;
+    private javax.swing.JButton jButtonBrowseBackup;
+    private javax.swing.JButton jButtonBrowseImagePath;
+    private javax.swing.JButton jButtonBrowsePandoc;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonDesktopCSS;
+    private javax.swing.JButton jButtonDesktopFont;
+    private javax.swing.JButton jButtonEditAutokorrekt;
+    private javax.swing.JButton jButtonEditSteno;
+    private javax.swing.JButton jButtonEntryCss;
+    private javax.swing.JButton jButtonFont;
+    private javax.swing.JButton jButtonFontcolor;
+    private javax.swing.JButton jButtonHighlightKeywordStyle;
+    private javax.swing.JButton jButtonHighlightLivesearchStyle;
+    private javax.swing.JButton jButtonHighlightStyle;
+    private javax.swing.JButton jButtonListFont;
+    private javax.swing.JButton jButtonResetDesktopCSS;
+    private javax.swing.JButton jButtonResetEntryCSS;
+    private javax.swing.JButton jButtonSynonymEdit;
+    private javax.swing.JButton jButtonTableBackgroundColor;
+    private javax.swing.JCheckBox jCheckBoxAllToHist;
+    private javax.swing.JCheckBox jCheckBoxAutoCompleteTags;
+    private javax.swing.JCheckBox jCheckBoxAutoUpdate;
+    private javax.swing.JCheckBox jCheckBoxAutobackup;
+    private javax.swing.JCheckBox jCheckBoxAutocorrect;
+    private javax.swing.JCheckBox jCheckBoxCheckNightly;
+    private javax.swing.JCheckBox jCheckBoxDesktopCSS;
+    private javax.swing.JCheckBox jCheckBoxEntryCSS;
+    private javax.swing.JCheckBox jCheckBoxExtraBackup;
+    private javax.swing.JCheckBox jCheckBoxFillNewEntries;
+    private javax.swing.JCheckBox jCheckBoxFootnote;
+    private javax.swing.JCheckBox jCheckBoxFootnoteBraces;
+    private javax.swing.JCheckBox jCheckBoxIconText;
+    private javax.swing.JCheckBox jCheckBoxImgResize;
+    private javax.swing.JCheckBox jCheckBoxJumpToTab;
+    private javax.swing.JCheckBox jCheckBoxLuhmannColSortable;
+    private javax.swing.JCheckBox jCheckBoxRegistry;
+    private javax.swing.JCheckBox jCheckBoxSearchWithoutFormatTags;
+    private javax.swing.JCheckBox jCheckBoxShowAllIcons;
+    private javax.swing.JCheckBox jCheckBoxShowEntryHeadline;
+    private javax.swing.JCheckBox jCheckBoxShowHorGrid;
+    private javax.swing.JCheckBox jCheckBoxShowTableBorder;
+    private javax.swing.JCheckBox jCheckBoxShowToolbar;
+    private javax.swing.JCheckBox jCheckBoxShowVerGrid;
+    private javax.swing.JCheckBox jCheckBoxSteno;
+    private javax.swing.JCheckBox jCheckBoxSynonym;
+    private javax.swing.JCheckBox jCheckBoxSystray;
+    private javax.swing.JCheckBox jCheckBoxUseMacBackgroundColor;
+    private javax.swing.JCheckBox jCheckBoxUseMarkdown;
+    private javax.swing.JCheckBox jCheckBoxUseXDGOpen;
+    private javax.swing.JComboBox jComboBoxBackgroundColors;
+    private javax.swing.JComboBox jComboBoxFonts;
+    private javax.swing.JComboBox jComboBoxIconTheme;
+    private javax.swing.JComboBox jComboBoxLAF;
+    private javax.swing.JComboBox jComboBoxLocale;
+    private javax.swing.JComboBox jComboBoxManualTimestamp;
+    private javax.swing.JComboBox jComboBoxShowAtStartup;
+    private javax.swing.JFormattedTextField jFormattedTextFieldImgHeight;
+    private javax.swing.JFormattedTextField jFormattedTextFieldImgWidth;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelColor;
+    private javax.swing.JLabel jLabelTableColor;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JSlider jSliderDesktopFontSize;
+    private javax.swing.JSlider jSliderFontSize;
+    private javax.swing.JSlider jSliderTextfields;
+    private javax.swing.JSpinner jSpinnerDistHor;
+    private javax.swing.JSpinner jSpinnerDistVer;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextFieldAttachmentPath;
+    private javax.swing.JTextField jTextFieldBackupPath;
+    private javax.swing.JTextField jTextFieldImagePath;
+    private javax.swing.JTextField jTextFieldPandoc;
+    // End of variables declaration//GEN-END:variables
+
+    private CFontChooser fontDlg;
+    private CAutoKorrekturEdit autoKorrektEdit;
+    private CStenoEdit stenoEdit;
+    private CHighlightSearchSettings highlightSettingsDlg;
+    private CSynonymsEdit synonymsDlg;
+    private CBiggerEditField biggerEditDlg;
 }
