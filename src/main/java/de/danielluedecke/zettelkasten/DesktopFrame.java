@@ -1749,14 +1749,14 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
                 // entry was not modified - thus we retrieve the "original" entry.
                 if (null == text || text.isEmpty()) {
                     // also cleaned text for wordcounter
-                    sbWordCountDisplayTask.append(dataObj.getCleanZettelContent(nr)).append(" ");
+                    sbWordCountDisplayTask.append(dataObj.getZettelContentUbbTagsRemoved(nr)).append(" ");
                     // get zettel-text
                     text = HtmlUbbUtil.getHtmlContentForDesktop(dataObj, bibtexObj, settingsObj, nr, isHeadingVisible, isEntryNumberVisible, false, false);
                 } // else if we have a modified entry-content, we still need to convert its
                 // ubb-tags to HTML. this is done here...
                 else {
                     // also cleaned text for wordcounter
-                    sbWordCountDisplayTask.append(Tools.removeUbbFromString(text, true)).append(" ");
+                    sbWordCountDisplayTask.append(Tools.removeUbbTagsFromString(text, true)).append(" ");
                     // get the html-text for an entry which content is passed as parameter...
                     text = HtmlUbbUtil.getHtmlContentForDesktop(dataObj,
                             bibtexObj, settingsObj, text, nr, isHeadingVisible,
@@ -2586,14 +2586,14 @@ public class DesktopFrame extends javax.swing.JFrame implements WindowListener {
         int nr = getSelectedEntryNumber();
         // when we have a valid selection, go on
         if (nr != -1) {
-            zknframe.openEditWindow(true, nr, false, false, -1);
+            zknframe.openEditor(true, nr, false, false, -1);
         }
     }
 
     @Action(enabledProperty = "nodeSelected")
     public void insertEntry() {
         zknframe.editEntryFromDesktop = true;
-        zknframe.openEditWindow(false, -1, false, false, getSelectedEntryNumber());
+        zknframe.openEditor(false, -1, false, false, getSelectedEntryNumber());
     }
 
     /**

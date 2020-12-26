@@ -36,7 +36,7 @@ package de.danielluedecke.zettelkasten;
 import de.danielluedecke.zettelkasten.util.Constants;
 import de.danielluedecke.zettelkasten.util.Version;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -56,11 +56,10 @@ import javax.swing.event.HyperlinkEvent;
 public class AboutBox extends javax.swing.JDialog {
 
     /**
-     * 
-     * @param parent
-     * @param ismacaqua 
+     *  @param parent
+     *
      */
-    public AboutBox(java.awt.Frame parent, boolean ismacaqua) {
+    public AboutBox(Frame parent) {
         super(parent);
         initComponents();
         // set application icon

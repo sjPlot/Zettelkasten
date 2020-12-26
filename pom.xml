@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.danielluedecke</groupId>
     <artifactId>Zettelkasten</artifactId>
-    <version>3.2.8</version>
+    <version>3.3.2</version>
     <name>Zettelkasten</name>
     <properties>
         <zkn.launch4jVersion>${project.version}.0</zkn.launch4jVersion>
@@ -256,6 +256,11 @@
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
             <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>0.46</version>
         </dependency>
         <dependency>
             <groupId>com.seaglasslookandfeel</groupId>

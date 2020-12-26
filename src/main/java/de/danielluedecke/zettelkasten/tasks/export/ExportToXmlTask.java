@@ -275,7 +275,7 @@ public class ExportToXmlTask extends org.jdesktop.application.Task<Object, Void>
                 Element el = new Element(Daten.ELEMENT_CONTENT);
                 // set the text from the data-file
                 el.setText((removeformattags)
-                        ? dataObj.getCleanZettelContent(zettelnummer)
+                        ? dataObj.getZettelContentUbbTagsRemoved(zettelnummer)
                         : zettel.getChild(Daten.ELEMENT_CONTENT).getText());
                 // and add it to our final document
                 el_zettel.addContent(el);

@@ -1176,7 +1176,7 @@ public class StartSearchTask extends org.jdesktop.application.Task<Object, Void>
                 sterms = new String[]{dataObj.getZettelTitle(searchnr)};
             }
             if (Constants.SEARCH_CONTENT == type) {
-                sterms = new String[]{dataObj.getCleanZettelContent(searchnr)};
+                sterms = new String[]{dataObj.getZettelContentUbbTagsRemoved(searchnr)};
             }
             if (Constants.SEARCH_REMARKS == type) {
                 sterms = new String[]{dataObj.getRemarks(searchnr)};

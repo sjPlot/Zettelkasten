@@ -293,7 +293,7 @@ public class ExportToTxtTask extends org.jdesktop.application.Task<Object, Void>
                             // convert footnotes
                             zettelcontent = HtmlUbbUtil.convertFootnotesToPlain(dataObj, bibtexObj, settingsObj, zettelcontent);
                             // remove any non-compatible UBB tags
-                            zettelcontent = Tools.removeUbbFromString(zettelcontent, true);
+                            zettelcontent = Tools.removeUbbTagsFromString(zettelcontent, true);
                             // if we have content, add it.
                             if (!zettelcontent.isEmpty()) {
                                 // replace tab-chars for text
@@ -568,10 +568,10 @@ public class ExportToTxtTask extends org.jdesktop.application.Task<Object, Void>
         // entry was not modified - thus we retrieve the "original" entry.
         if (null == text || text.isEmpty()) {
             // get cleanded content, for plain text without any ubb-tags
-            text = dataObj.getCleanZettelContent(nr);
+            text = dataObj.getZettelContentUbbTagsRemoved(nr);
         } else {
             // else clean text from ubb-tags
-            text = Tools.removeUbbFromString(text, true);
+            text = Tools.removeUbbTagsFromString(text, true);
         }
         // replace tab-chars for text
         text = text.replace("&#9;", "\t");

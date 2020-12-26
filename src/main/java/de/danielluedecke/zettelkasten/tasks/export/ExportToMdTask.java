@@ -32,8 +32,12 @@
  */
 package de.danielluedecke.zettelkasten.tasks.export;
 
-import de.danielluedecke.zettelkasten.database.*;
+import de.danielluedecke.zettelkasten.ZettelkastenApp;
 import de.danielluedecke.zettelkasten.database.BibTeX;
+import de.danielluedecke.zettelkasten.database.Daten;
+import de.danielluedecke.zettelkasten.database.DesktopData;
+import de.danielluedecke.zettelkasten.database.Settings;
+import de.danielluedecke.zettelkasten.database.TasksData;
 import de.danielluedecke.zettelkasten.util.Constants;
 import de.danielluedecke.zettelkasten.util.FileOperationsUtil;
 import de.danielluedecke.zettelkasten.util.HtmlUbbUtil;
@@ -130,7 +134,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
      * get the strings for file descriptions from the resource map
      */
     private final org.jdesktop.application.ResourceMap resourceMap
-            = org.jdesktop.application.Application.getInstance(de.danielluedecke.zettelkasten.ZettelkastenApp.class).
+            = org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).
             getContext().getResourceMap(ExportTask.class);
 
     /**
@@ -292,7 +296,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
                             // convert footnotes
                             zc = HtmlUbbUtil.convertFootnotesToPlain(dataObj, bibtexObj, settingsObj, zc);
                             // remove any non-compatible UBB tags
-                            String zettelcontent = Tools.removeUbbFromString(zc, false);
+                            String zettelcontent = Tools.removeUbbTagsFromString(zc, false);
                             // if we have content, add it.
                             if (!zettelcontent.isEmpty()) {
                                 exportPage.append(zettelcontent);
@@ -568,10 +572,10 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
         // entry was not modified - thus we retrieve the "original" entry.
         if (null == text || text.isEmpty()) {
             // get cleanded content, for plain text without any ubb-tags
-            text = Tools.removeUbbFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
+            text = Tools.removeUbbTagsFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
         } else {
             // else clean text from ubb-tags
-            text = Tools.removeUbbFromString(text, false);
+            text = Tools.removeUbbTagsFromString(text, false);
         }
         // check whether the user wants to export titles.
         // check whether the user wants to export titles.

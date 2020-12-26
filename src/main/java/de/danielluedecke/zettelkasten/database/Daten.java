@@ -4354,18 +4354,21 @@ public class Daten {
      * entry and author
      */
     public String getEntryAsHtml(int pos, String[] segmentKeywords, int sourceframe) {
+
         // retrieve the entry
         Element entry = retrieveElement(zknFile, pos);
+
         // if no element exists, return empty array
-        if (null == entry) {
-            return "";
+        String result = "";
+
+        if (null != entry) {// pass the title, content and author information to the html class
+// this class is responsible for doing the layout of the html page
+// which display an entry in the main window's JEditorPane
+// return the complete html page as string array, first element of the
+// array containing the main entry, second element the author information
+            result = HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
         }
-        // pass the title, content and author information to the html class
-        // this class is responsible for doing the layout of the html page
-        // which display an entry in the main window's JEditorPane
-        // return the complete html page as string array, first element of the
-        // array containing the main entry, second element the author information
-        return HtmlUbbUtil.getEntryAsHTML(settings, this, bibtexObj, pos, segmentKeywords, sourceframe);
+        return result;
     }
 
     /**
@@ -6074,7 +6077,7 @@ public class Daten {
      * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6096,30 +6099,6 @@ public class Daten {
 
     /**
      * This method returns the content of a certain entry, i.e. the main entry
-     * text (text excerpt or whatever). The content is returned in
-     * HTML-format.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
-     * need the plain text entry <i>without</i> format-tags.
-     *
-     * @param pos the index number of the entry which content is requested. Must
-     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
-     * @return the html-converted content of the requested entry as a string or
-     * an empty string if no entry was found or the requested entry does not
-     * exist
-     */
-    public String getZettelContentAsHtml(int pos) {
-        // retrieve the element from the main xml-file
-        Element el = retrieveElement(zknFile, pos);
-        // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
-        }
-        // else return entry as html
-        return HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
-    }
-
-    /**
-     * This method returns the content of a certain entry, i.e. the main entry
      * text (text excerpt or whatever). The content is returned as it is stored
      * in the XML-datafile. So we have the "plain text" here, <i>with</i>
      * format-tags, but <i>not</i> prepared for HTML-display.<br><br>
@@ -6129,7 +6108,7 @@ public class Daten {
      * <br><br>
      * Use {@link #getEntryAsHtml(int, java.lang.String[]) getEntryAsHtml()} if
      * you need the HTML-formatted entry instead.<br><br>
-     * Use {@link #getCleanZettelContent(int) getCleanZettelContent()} if you
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
      * need the plain text entry <i>without</i> format-tags.
      *
      * @param pos the index number of the entry which content is requested. Must
@@ -6141,30 +6120,57 @@ public class Daten {
      * does not exist
      */
     public String getZettelContent(int pos, boolean encodeUTF) {
+
         // retrieve the element from the main xml-file
         Element el = retrieveElement(zknFile, pos);
+
         // if element or child element is null, return empty string
-        if (null == el || null == el.getChild(ELEMENT_CONTENT)) {
-            return "";
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// retrieve entry's content
+            String preparestring = el.getChild(ELEMENT_CONTENT).getText();// create dummy-string-builder
+            StringBuilder buf = new StringBuilder("");// iterate each char of the string
+            for (int i = 0; i < preparestring.length(); i++) {
+                // retrieve char
+                char c = preparestring.charAt(i);
+                // if it's a normal char, append it...
+                if ((int) c < 160) {
+                    buf.append(c);
+                } else {
+                    // else append entity of unicode-char
+                    buf.append("&#").append((int) c).append(";");
+                }
+            }// return converted string
+            result = buf.toString();
         }
-        // retrieve entry's content
-        String preparestring = el.getChild(ELEMENT_CONTENT).getText();
-        // create dummy-string-builder
-        StringBuilder buf = new StringBuilder("");
-        // iterate each char of the string
-        for (int i = 0; i < preparestring.length(); i++) {
-            // retrieve char
-            char c = preparestring.charAt(i);
-            // if it's a normal char, append it...
-            if ((int) c < 160) {
-                buf.append(c);
-            } else {
-                // else append entity of unicode-char
-                buf.append("&#").append((int) c).append(";");
-            }
+        return result;
+    }
+
+    /**
+     * This method returns the content of a certain entry, i.e. the main entry
+     * text (text excerpt or whatever). The content is returned in
+     * HTML-format.<br><br>
+     * Use {@link #getZettelContentUbbTagsRemoved(int) getZettelContentUbbTagsRemoved()} if you
+     * need the plain text entry <i>without</i> format-tags.
+     *
+     * @param pos the index number of the entry which content is requested. Must
+     * be a number from 1 to {@link #getCount(int) getCount(CDaten.ZKNCOUNT)}.
+     * @return the html-converted content of the requested entry as a string or
+     * an empty string if no entry was found or the requested entry does not
+     * exist
+     */
+    public String getZettelContentAsHtml(int pos) {
+
+        // retrieve the element from the main xml-file
+        Element el = retrieveElement(zknFile, pos);
+
+        // if element or child element is null, return empty string
+        String result = "";
+
+        if (null != el && null != el.getChild(ELEMENT_CONTENT)) {// else return entry as html
+            result = HtmlUbbUtil.convertUbbToHtml(settings, this, bibtexObj, el.getChild(ELEMENT_CONTENT).getText(), Constants.FRAME_MAIN, false, false);
         }
-        // return converted string
-        return buf.toString();
+        return result;
     }
 
     /**
@@ -6212,15 +6218,19 @@ public class Daten {
      * @return the cleaned content of that entry, with all formatting-tags
      * removed
      */
-    public String getCleanZettelContent(int pos) {
+    public String getZettelContentUbbTagsRemoved(int pos) {
+
         // get the zettel content
         String content = getZettelContent(pos);
-        // if the content is not empty...
+
+        // if content is empty
+        String result = "";
+
         if (!content.isEmpty()) {
             // return the cleaned string
-            return Tools.removeUbbFromString(content, true);
+            result = Tools.removeUbbTagsFromString(content, true);
         }
-        return "";
+        return result;
     }
 
     /**

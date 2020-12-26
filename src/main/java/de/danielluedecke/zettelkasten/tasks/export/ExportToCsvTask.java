@@ -236,7 +236,7 @@ public class ExportToCsvTask extends org.jdesktop.application.Task<Object, Void>
                     // in the exportparts-variabe. if so, export content
                     if ((exportparts & Constants.EXPORT_CONTENT) != 0) {
                         csvline.add((removeformattags)
-                                ? dataObj.getCleanZettelContent(zettelnummer)
+                                ? dataObj.getZettelContentUbbTagsRemoved(zettelnummer)
                                 : dataObj.getZettelContent(zettelnummer));
                     }
                     // see whether the bit "EXPORT_AUTHOR" is set
