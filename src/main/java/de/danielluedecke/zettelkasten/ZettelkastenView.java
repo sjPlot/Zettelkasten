@@ -8284,7 +8284,7 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     /**
      * This method is called by EditorFrame to indicate when an edit.action has ended.
      */
-    public void EditingFinishedEvent() {
+    public void editFinishedEvent() {
         // edit window was closed
         isEditModeActive = false;
         // if the user made changes to the datafile, e.g. adding new entries
