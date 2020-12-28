@@ -181,7 +181,6 @@ public class SearchResultsFrame extends javax.swing.JFrame {
      * @param syn
      * @param bib 
      */
-    @SuppressWarnings("LeakingThisInConstructor")
     public SearchResultsFrame(ZettelkastenView zkn, Daten d, SearchRequests sr, DesktopData desk, Settings s, AcceleratorKeys ak, Synonyms syn, BibTeX bib) {
         searchframe = this;
         // init variables from parameters
@@ -201,7 +200,6 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         // create brushed look for window, so toolbar and window-bar become a unit
         if (settingsObj.isMacAqua()) {
             MacUtils.makeWindowLeopardStyle(getRootPane());
-            // WindowUtils.createAndInstallRepaintWindowFocusListener(this);
             WindowUtils.installJComponentRepainterOnWindowFocusChanged(this.getRootPane());
         }
         // init all components
@@ -288,7 +286,6 @@ public class SearchResultsFrame extends javax.swing.JFrame {
                 jPanel1.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ColorUtil.getBorderGray(settingsObj)));
                 jPanel2.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, ColorUtil.getBorderGray(settingsObj)));
             }
-            // jPanel3.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, ColorUtil.getBorderGray(settingsObj)));
         }
         if (settingsObj.isMacAqua()) {
             ZknMacWidgetFactory.updateSplitPane(jSplitPaneSearch1);
@@ -469,7 +466,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
     }
 
     private void initListeners() {
-        // these codelines add an escape-listener to the dialog. so, when the user
+        // these code lines add an escape-listener to the dialog. so, when the user
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
         KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
@@ -480,7 +477,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
             }
         };
         getRootPane().registerKeyboardAction(cancelAction, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        // these codelines add an escape-listener to the dialog. so, when the user
+        // these code lines add an escape-listener to the dialog. so, when the user
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
         stroke = KeyStroke.getKeyStroke(accKeys.getAcceleratorKey(AcceleratorKeys.MAINKEYS, "showDesktopWindow"));
@@ -630,7 +627,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
                 if (jTableResults==e.getSource()) displayEntryInMainframe();
             }
         };
-        // put action to the tables' actionmaps
+        // put action to the tables' action maps
         jTextFieldFilterList.getActionMap().put("EnterKeyPressed",a_enter);
         jTableResults.getActionMap().put("EnterKeyPressed",a_enter);
         // associate enter-keystroke with that action
@@ -1050,7 +1047,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         jTableResults.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,Collections.unmodifiableSet(newBackwardKeys));
         // create new table sorter
         TableRowSorter<TableModel> sorter = new TableRowSorter<>();
-        // tell tgis jtable that it has an own sorter
+        // tell this jTable that it has an own sorter
         jTableResults.setRowSorter(sorter);
         // and tell the sorter, which table model to sort.
         sorter.setModel((DefaultTableModel)jTableResults.getModel());
