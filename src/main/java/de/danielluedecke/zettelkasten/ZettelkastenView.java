@@ -6934,43 +6934,40 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
      * in the system tray instead.
      */
     private void initSystemTray() {
+        boolean finished = false;
         // if system tray is not supported, leave method
-        if (!isSupported()) {
-            return;
-        }
-        // create tray-icon with tooltip
-        trayIcon = new TrayIcon((new ImageIcon(org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/zkn3_16x16.png"), "Zettelkasten")).getImage());
-        // retrieve system tray
-        tray = getSystemTray();
-        // try to add the tray icon to the system tray
-        try {
-            tray.add(trayIcon);
-        } catch (AWTException e) {
-            Constants.zknlogger.log(Level.WARNING, "Tray Icon could not be added.");
-            return;
-        }
-        // if tray icon was successfully added, add tooltip
-        trayIcon.setToolTip("Zettelkasten");
-        // and mouse listener, so the window will be restored when the user clicks on the tray icon
-        trayIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // set main frame visible
-                getFrame().setVisible(true);
-                // restore frame state to normal state
-                getFrame().setExtendedState(java.awt.Frame.NORMAL);
-                // if we have a tray icon, remove it
-                if (tray != null) {
-                    // clear popup menu
-                    trayIcon.setPopupMenu(null);
-                    // remove tray icon
-                    tray.remove(trayIcon);
-                }
-                // and say that tray icon is currently not installed
-                trayIconInstalled = false;
+        if (isSupported()) {// create tray-icon with tooltip
+            trayIcon = new TrayIcon((new ImageIcon(Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/zkn3_16x16.png"), "Zettelkasten")).getImage());// retrieve system tray
+            tray = getSystemTray();// try to add the tray icon to the system tray
+            try {
+                tray.add(trayIcon);
+            } catch (AWTException e) {
+                Constants.zknlogger.log(Level.WARNING, "Tray Icon could not be added.");
+                finished = true;
             }
-        });
-        trayIconInstalled = true;
+            if (!finished) {// if tray icon was successfully added, add tooltip
+                trayIcon.setToolTip("Zettelkasten");// and mouse listener, so the window will be restored when the user clicks on the tray icon
+                trayIcon.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent evt) {
+                        // set main frame visible
+                        getFrame().setVisible(true);
+                        // restore frame state to normal state
+                        getFrame().setExtendedState(Frame.NORMAL);
+                        // if we have a tray icon, remove it
+                        if (tray != null) {
+                            // clear popup menu
+                            trayIcon.setPopupMenu(null);
+                            // remove tray icon
+                            tray.remove(trayIcon);
+                        }
+                        // and say that tray icon is currently not installed
+                        trayIconInstalled = false;
+                    }
+                });
+                trayIconInstalled = true;
+            }
+        }
     }
 
     @Override
