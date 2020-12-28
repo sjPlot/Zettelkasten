@@ -1,3 +1,8 @@
+
+# [Unreleased]
+### Fehlerbehebungen
+- Zettelkasten-Dateien importieren: Einträgen mit bereits vergebener ID wird eine neue ID gegeben, statt diese Einträge zu löschen ([215](https://github.com/Zettelkasten-Team/Zettelkasten/issues/215)). 
+
 <a name="v3.3.1"></a>
 # [3.3.1](https://github.com/Zettelkasten-Team/Zettelkasten/compare/3.3.0...v3.3.1) (2020-04-06)
 ### Fehlerbehebungen
