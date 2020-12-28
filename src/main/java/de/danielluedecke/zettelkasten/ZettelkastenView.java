@@ -91,6 +91,7 @@ import java.util.logging.StreamHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.awt.SystemTray.*;
 import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
 import static javax.swing.UIManager.setLookAndFeel;
 
@@ -6928,20 +6929,20 @@ public class ZettelkastenView extends FrameView implements WindowListener, DropT
     }
 
     /**
-     * This method inits the system tray. if supported, the program's window
-     * does not deiconfy/minimize to the taskbar, but hides and displays an icon
+     * This method activates the system tray. If supported, the program's window
+     * is not moved/minimized to the taskbar, but hidden and an icon is displayed
      * in the system tray instead.
      */
     private void initSystemTray() {
-        // if systemtray is not supported, leave method
-        if (!SystemTray.isSupported()) {
+        // if system tray is not supported, leave method
+        if (!isSupported()) {
             return;
         }
         // create tray-icon with tooltip
         trayIcon = new TrayIcon((new ImageIcon(org.jdesktop.application.Application.getInstance(ZettelkastenApp.class).getClass().getResource("/de/danielluedecke/zettelkasten/resources/icons/zkn3_16x16.png"), "Zettelkasten")).getImage());
         // retrieve system tray
-        tray = SystemTray.getSystemTray();
-        // try to add the tray icon to the systray
+        tray = getSystemTray();
+        // try to add the tray icon to the system tray
         try {
             tray.add(trayIcon);
         } catch (AWTException e) {
