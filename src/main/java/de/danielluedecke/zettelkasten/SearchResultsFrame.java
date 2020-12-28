@@ -233,7 +233,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         // This method initialises the toolbar buttons. depending on the user-setting, we either
         // display small, medium or large icons as toolbar-icons.
         initToolbarIcons();
-        // init default sont-sizes
+        // init default font-sizes
         initDefaultFontSize();
         // and update the title
         updateTitle();
@@ -481,31 +481,19 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
         stroke = KeyStroke.getKeyStroke(accKeys.getAcceleratorKey(AcceleratorKeys.MAINKEYS, "showDesktopWindow"));
-        ActionListener showDesktopWindowAction = new java.awt.event.ActionListener() {
-            @Override public void actionPerformed(ActionEvent evt) {
-                mainframe.showDesktopWindow();
-            }
-        };
+        ActionListener showDesktopWindowAction = evt -> mainframe.showDesktopWindow();
         getRootPane().registerKeyboardAction(showDesktopWindowAction, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        // these codelines add an escape-listener to the dialog. so, when the user
+        // these code lines add an escape-listener to the dialog. so, when the user
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
         stroke = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
-        ActionListener showMainFrameAction = new java.awt.event.ActionListener() {
-            @Override public void actionPerformed(ActionEvent evt) {
-                mainframe.bringToFront();
-            }
-        };
+        ActionListener showMainFrameAction = evt -> mainframe.bringToFront();
         getRootPane().registerKeyboardAction(showMainFrameAction, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        // these codelines add an escape-listener to the dialog. so, when the user
+        // these code lines add an escape-listener to the dialog. so, when the user
         // presses the escape-key, the same action is performed as if the user
         // presses the cancel button...
         stroke = KeyStroke.getKeyStroke(accKeys.getAcceleratorKey(AcceleratorKeys.MAINKEYS, "showNewEntryWindow"));
-        ActionListener showNewEntryFrameAction = new java.awt.event.ActionListener() {
-            @Override public void actionPerformed(ActionEvent evt) {
-                mainframe.showNewEntryWindow();
-            }
-        };
+        ActionListener showNewEntryFrameAction = evt -> mainframe.showNewEntryWindow();
         getRootPane().registerKeyboardAction(showNewEntryFrameAction, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
         searchSearchMenu.addMenuListener(new javax.swing.event.MenuListener() {
             @Override public void menuSelected(javax.swing.event.MenuEvent evt) {
@@ -516,35 +504,33 @@ public class SearchResultsFrame extends javax.swing.JFrame {
             @Override public void menuDeselected(javax.swing.event.MenuEvent evt) {}
             @Override public void menuCanceled(javax.swing.event.MenuEvent evt) {}
         });
-        jEditorPaneSearchEntry.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
-            @Override public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
-                // get input event with additional modifiers
-                java.awt.event.InputEvent inev = evt.getInputEvent();
-                // check whether shift key was pressed, and if so, remove manual link
-                if (inev.isControlDown() || inev.isMetaDown()) {
-                    // get selected entry
-                    int row = jTableResults.getSelectedRow();
-                    // when we have a valid selection, go on
-                    if (row!=-1) {
-                        int displayedZettel = Integer.parseInt(jTableResults.getValueAt(row, 0).toString());
-                        if (Tools.removeHyperlink(evt.getDescription(), dataObj, displayedZettel)) {
-                            mainframe.updateDisplay();
-                        }
+        jEditorPaneSearchEntry.addHyperlinkListener(evt -> {
+            // get input event with additional modifiers
+            java.awt.event.InputEvent inev = evt.getInputEvent();
+            // check whether shift key was pressed, and if so, remove manual link
+            if (inev.isControlDown() || inev.isMetaDown()) {
+                // get selected entry
+                int row = jTableResults.getSelectedRow();
+                // when we have a valid selection, go on
+                if (row!=-1) {
+                    int displayedZettel = Integer.parseInt(jTableResults.getValueAt(row, 0).toString());
+                    if (Tools.removeHyperlink(evt.getDescription(), dataObj, displayedZettel)) {
+                        mainframe.updateDisplay();
                     }
-                } else if (evt.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-                    javax.swing.text.Element elem = evt.getSourceElement();
-                    if (elem != null) {
-                        AttributeSet attr = elem.getAttributes();
-                        AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
-                        if (a != null) {
-                            jEditorPaneSearchEntry.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
-                        }
-                    }
-                } else if (evt.getEventType() == HyperlinkEvent.EventType.EXITED) {
-                    jEditorPaneSearchEntry.setToolTipText(null);
-                } else {
-                    openAttachment(evt);
                 }
+            } else if (evt.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+                javax.swing.text.Element elem = evt.getSourceElement();
+                if (elem != null) {
+                    AttributeSet attr = elem.getAttributes();
+                    AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
+                    if (a != null) {
+                        jEditorPaneSearchEntry.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
+                    }
+                }
+            } else if (evt.getEventType() == HyperlinkEvent.EventType.EXITED) {
+                jEditorPaneSearchEntry.setToolTipText(null);
+            } else {
+                openAttachment(evt);
             }
         });
         jTableResults.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -552,7 +538,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
                 // this listener should only react on left-mouse-button-clicks...
                 // if other button then left-button clicked, don't count it.
                 if(evt.getButton()!=MouseEvent.BUTTON1) return;
-                // only show entry on double clicl
+                // only show entry on double click
                 if (2==evt.getClickCount()) displayEntryInMainframe();
             }
         });
@@ -577,7 +563,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
         jListKeywords.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // this listener should only react on left-mouse-button-clicks...
-                // if other button then left-button clicked, leeave...
+                // if other button then left-button clicked, leave...
                 if(evt.getButton()!=MouseEvent.BUTTON1) return;
                 // on double click
                 if (2==evt.getClickCount()) {
@@ -611,7 +597,7 @@ public class SearchResultsFrame extends javax.swing.JFrame {
      * to all components, although key-events would fulfill the same purpose.
      * <br><br>
      * The advantage of action maps is, that dependent from the operating system we need only
-     * to associte a single action. with key-events, for each component we have to check
+     * to associate a single action. with key-events, for each component we have to check
      * whether the operating system is mac os or windows, and then checking for different keys,
      * thus doubling each command: checking for F2 to edit, or checking for command+enter and also
      * call the edit-method. using action maps, we simply as for the os once, storing the related
