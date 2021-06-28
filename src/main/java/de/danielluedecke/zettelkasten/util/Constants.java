@@ -33,10 +33,13 @@
 package de.danielluedecke.zettelkasten.util;
 
 import de.danielluedecke.zettelkasten.ZettelkastenView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  * This class contains generic constant values that are used all over the
@@ -47,10 +50,6 @@ import java.util.logging.Logger;
  */
 public class Constants {
 
-    /*
-     * This variable stores the current programme and build version number
-     */
-    // public static final String BUILD_VERSION = "3.2.8 (Build 20180603)";
     /**
      * This constants stores the website-address where the Zettelkasten can be
      * downloaded:<br><br>
@@ -244,7 +243,7 @@ public class Constants {
     public static final String DRAG_SOURCE_JTREELUHMANN = "jTreeLuhmann";
     public static final String ROOT_ID_NAME = "root";
 
-    // Here we have the formatting tags which are used in the EditorFrame
+    // Here we have the formatting tags which are used in the NewEntryFrame
     public static final String FORMAT_BOLD_OPEN = "[f]";
     public static final String FORMAT_BOLD_CLOSE = "[/f]";
     public static final String FORMAT_MD_BOLD_OPEN = "**";
@@ -911,7 +910,7 @@ public class Constants {
 
     /**
      * A string array that contains the different encodings that are used by the
-     * different reference managers when exporting their data to a bibtex
+     * different reference- managers when exporting their data to a bibtext
      * file. use also {@link #BIBTEX_DESCRIPTIONS} to retrieve the programmes'
      * names associated with these encoding.<br><br>
      * 0: UTF-8 (Bibliographix)<br>

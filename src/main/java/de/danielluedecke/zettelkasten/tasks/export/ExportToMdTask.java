@@ -33,7 +33,7 @@
 package de.danielluedecke.zettelkasten.tasks.export;
 
 import de.danielluedecke.zettelkasten.ZettelkastenApp;
-import de.danielluedecke.zettelkasten.database.BibTex;
+import de.danielluedecke.zettelkasten.database.BibTeX;
 import de.danielluedecke.zettelkasten.database.Daten;
 import de.danielluedecke.zettelkasten.database.DesktopData;
 import de.danielluedecke.zettelkasten.database.Settings;
@@ -63,7 +63,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
     /**
      *
      */
-    private final BibTex bibtexObj;
+    private final BibTeX bibtexObj;
     /**
      *
      */
@@ -146,7 +146,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
      * @param d a reference to the Daten-class
      * @param dt a reference to the DesktopData-class
      * @param s a reference to the Settings-class
-     * @param bto a refrence to the BibTex-class
+     * @param bto a refrence to the BibTeX-class
      * @param fp the filepath and -name of the export-file
      * @param ee an integer-array of those entries that should be exported. use {
      * @null} to export all entries
@@ -177,8 +177,8 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
      * @param sf whether each note should be saved as separate file
      */
     public ExportToMdTask(org.jdesktop.application.Application app, javax.swing.JDialog parent, javax.swing.JLabel label,
-            TasksData td, Daten d, DesktopData dt, Settings s, BibTex bto, File fp, ArrayList<Object> ee, int type, int part,
-            DefaultMutableTreeNode n, boolean bibtex, boolean ihv, boolean numberprefix, boolean sf) {
+                          TasksData td, Daten d, DesktopData dt, Settings s, BibTeX bto, File fp, ArrayList<Object> ee, int type, int part,
+                          DefaultMutableTreeNode n, boolean bibtex, boolean ihv, boolean numberprefix, boolean sf) {
         super(app);
         dataObj = d;
         settingsObj = s;
@@ -296,7 +296,7 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
                             // convert footnotes
                             zc = HtmlUbbUtil.convertFootnotesToPlain(dataObj, bibtexObj, settingsObj, zc);
                             // remove any non-compatible UBB tags
-                            String zettelcontent = Tools.removeUbbFromString(zc, false);
+                            String zettelcontent = Tools.removeUbbTagsFromString(zc, false);
                             // if we have content, add it.
                             if (!zettelcontent.isEmpty()) {
                                 exportPage.append(zettelcontent);
@@ -572,10 +572,10 @@ public class ExportToMdTask extends org.jdesktop.application.Task<Object, Void> 
         // entry was not modified - thus we retrieve the "original" entry.
         if (null == text || text.isEmpty()) {
             // get cleanded content, for plain text without any ubb-tags
-            text = Tools.removeUbbFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
+            text = Tools.removeUbbTagsFromString(Tools.convertUBB2MarkDown(dataObj.getZettelContent(nr)), false);
         } else {
             // else clean text from ubb-tags
-            text = Tools.removeUbbFromString(text, false);
+            text = Tools.removeUbbTagsFromString(text, false);
         }
         // check whether the user wants to export titles.
         // check whether the user wants to export titles.
